@@ -1,9 +1,10 @@
 import AppLayout from "./layout/appLayout";
+import Auth from "./pages/auth";
 
 const App = () => {
   return (
     <AppLayout>
-      <h1 className="text-3xl font-MarkGeo">გამარჯობა world!</h1>
+      <Auth />
     </AppLayout>
   );
 };
