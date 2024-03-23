@@ -1,9 +1,15 @@
+import { Routes } from "react-router-dom";
 import AppLayout from "./layout/appLayout";
+import { generateLazyRoutes } from "./lib/lazy-route";
+import { usePermissions } from "./lib/permissions";
 
 const App = () => {
+  const permissions = usePermissions();
+  const generateRoutes = generateLazyRoutes(permissions);
+
   return (
     <AppLayout>
-      <h1 className="text-3xl font-MarkGeo">გამარჯობა world!</h1>
+      <Routes>{generateRoutes}</Routes>
     </AppLayout>
   );
 };
