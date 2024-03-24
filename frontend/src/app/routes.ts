@@ -1,5 +1,4 @@
 import { PermissionKey } from "../lib/permissions";
-
 import { ComponentType } from "react";
 import lazy, { PreloadableComponent } from "react-lazy-with-preload";
 

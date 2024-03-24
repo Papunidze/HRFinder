@@ -7,7 +7,7 @@
 @tailwind utilities;
 
 :root {
-  --background: #edf2fb;
+  --background: #fefbf5;
   --text-color: rgb(20, 20, 20);
 }
 
@@ -23,6 +23,43 @@
   text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--background);
+}
+
+@layer utilities {
+  label,
+  span,
+  p,
+  a {
+    @apply font-MarkGeo font-semibold leading-3 tracking-wide;
+  }
+  .input {
+    @apply block w-full rounded-lg text-base py-1.5 px-3 border leading-7 outline-none shadow-md focus:ring-2 focus:ring-primary-light hover:ring-1 hover:ring-secondary-dark bg-secondary-dark font-inter;
+  }
+  .label {
+    @apply block text-base font-medium leading-4 px-1 py-2;
+  }
+  .button {
+    @apply flex w-auto font-MarkGeo tracking-wide text-base justify-center gap-2 rounded-md px-3 py-1.5 font-semibold leading-7 shadow-md  outline-none transition-all duration-500;
+  }
+  .primary {
+    @apply text-white bg-gradient-1;
+  }
+  .secondary {
+    @apply bg-gradient-3  shadow-inner border-2 border-slate-100;
+  }
+  .primary:hover {
+    @apply bg-gradient-2  from-primary-dark to-primary-light;
+  }
+  .secondary:hover {
+    @apply bg-gradient-4 from-secondary-dark to-secondary-light;
+  }
+  .link {
+    @apply underline text-xs cursor-pointer float-right font-semibold;
+  }
 }
 
 @font-face {

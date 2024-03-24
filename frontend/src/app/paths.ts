@@ -2,7 +2,7 @@ export const authRoutes = {
   signIn: "/",
 };
 
-export const unauthRoutes = {
+export const unAuthRoutes = {
   index: "/",
   sport: "/sport",
   match: "/sport/:matchId",
@@ -12,5 +12,5 @@ export const unauthRoutes = {
 
 export const routes = {
   ...authRoutes,
-  ...unauthRoutes,
+  ...unAuthRoutes,
 };
