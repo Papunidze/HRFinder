@@ -4,10 +4,7 @@ export const authRoutes = {
 
 export const unAuthRoutes = {
   index: "/",
-  sport: "/sport",
-  match: "/sport/:matchId",
-  buyTicket: "/event/:eventId",
-  confirmation: "/confirmation/:confirmationId",
+  home: "/home",
 };
 
 export const routes = {

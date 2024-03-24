@@ -1,5 +1,4 @@
 import constate from "constate";
-
 import { useState } from "react";
 
 export enum AuthType {

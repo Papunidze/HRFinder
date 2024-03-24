@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { AuthType, useAuthContext } from "../../provider/loginProvider";
+import { AuthType, useAuthContext } from "@/provider/loginProvider";
 
 const permissions = {
   canViewRoles: false,

@@ -1,6 +1,6 @@
 import React from "react";
-import { Route, authRoutesData, unAuthRoutesData } from "../../app/routes";
-import { Permissions } from "../permissions";
+import { Route, authRoutesData, unAuthRoutesData } from "@/app/routes";
+import { Permissions } from "@/lib/permissions";
 import { Helmet } from "react-helmet";
 import { Route as BaseRoute } from "react-router-dom";
 

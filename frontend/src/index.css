@@ -49,7 +49,7 @@ body {
     @apply text-white bg-gradient-1;
   }
   .secondary {
-    @apply bg-gradient-3  shadow-inner border-2 border-slate-100;
+    @apply bg-gradient-3;
   }
   .primary:hover {
     @apply bg-gradient-2  from-primary-dark to-primary-light;

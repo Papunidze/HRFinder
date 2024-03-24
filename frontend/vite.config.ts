@@ -2,7 +2,6 @@ import { defineConfig } from "vite";
 import reactRefresh from "@vitejs/plugin-react-refresh";
 import { visualizer } from "rollup-plugin-visualizer";
 import { terser } from "rollup-plugin-terser";
-import path from "path";
 
 export default defineConfig({
   plugins: [
@@ -16,7 +15,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src"),
+      "@": "/src",
     },
   },
   build: {
