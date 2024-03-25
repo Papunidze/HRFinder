@@ -1,9 +1,11 @@
+const { promisify } = require("util");
 const catchAsync = require("../utils/catch-async");
 const AppError = require("../utils/app-error");
 const User = require("../models/user-models");
 const bcrypt = require("bcrypt");
 const { signTokens } = require("../utils/sign-tokens");
 const { setRefreshTokenCookie } = require("../utils/set-cookies");
+const jwt = require("jsonwebtoken");
 
 exports.signup = catchAsync(async (req, res, next) => {
   try {
@@ -78,3 +80,36 @@ exports.sign = async (req, res, next) => {
     return next(new AppError(err.message));
   }
 };
+
+exports.refresh = catchAsync(async (req, res, next) => {
+  const refreshToken = req.cookies.rt || req.body.token;
+
+  if (!refreshToken) {
+    return next(
+      new AppError("User is not authorized", 401, "errors.unauthorized")
+    );
+  }
+
+  const decoded = await promisify(jwt.verify)(
+    refreshToken,
+    process.env.JWT_REFRESH_SECRET
+  );
+
+  if (!decoded || !decoded.id) {
+    return next(
+      new AppError("User is not authorized", 401, "errors.unauthorized")
+    );
+  }
+
+  const user = await User.findById(decoded.id);
+
+  if (!user) {
+    return next(new AppError("User not found", 404, "error.user_not_found"));
+  }
+
+  const tokens = signTokens(user, user._id);
+
+  setRefreshTokenCookie(res, tokens.refreshToken);
+
+  res.status(200).json({ status: "success", ...tokens });
+});

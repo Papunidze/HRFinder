@@ -13,8 +13,7 @@ export type Permissions = Record<PermissionKey, boolean>;
 export const usePermissions = () => {
   const { auth } = useAuthContext();
 
-  const isAuthenticated =
-    auth.type === AuthType.NULL || auth.type === AuthType.UNAUTHENTICATED;
+  const isAuthenticated = auth.type === AuthType.UNAUTHENTICATED;
 
   return useMemo(
     () =>

@@ -1,8 +1,13 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import Google from "@/images//google.png";
 import { Form } from "@/cmd-domain/form/form";
 import { ControlledInput } from "@/cmd-domain/inputs/controlled-input";
 import { useNavigate } from "react-router-dom";
+import { auth } from "@/modules/auth/sign-in/sign-in-api";
+import { useMutation } from "@/lib/rest-query/use-mutation";
+import { useAuthContext } from "@/provider/loginProvider";
+import { signInSchema } from "@/constant/authorization";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -14,7 +19,11 @@ const SignIn = () => {
     // setValue,
   } = useForm({
     defaultValues: { email: "", password: "" },
+    resolver: yupResolver(signInSchema),
   });
+  const { setAuthData } = useAuthContext();
+
+  const $auth = useMutation(auth);
 
   return (
     <div className="text-2xl leading-7 font-bold mb-2 flex flex-col gap-4 mt-4 w-full max-w-[450px]">
@@ -31,7 +40,21 @@ const SignIn = () => {
       </div>
 
       <Form
-        onSubmit={handleSubmit((data) => console.log(data))}
+        onSubmit={handleSubmit((form) =>
+          $auth.mutate(
+            { ...form },
+            {
+              onSuccess: ({ ...args }) => {
+                setAuthData({ ...args });
+                navigate(location.pathname);
+              },
+              onError: ({ message }) => {
+                console.log(message);
+                // enqueueSnackbar(t(`response.${code}`), { variant: "error" });
+              },
+            }
+          )
+        )}
         submitButtonLabel="შესვლა"
         form={
           <div className="relative flex flex-col gap-4">

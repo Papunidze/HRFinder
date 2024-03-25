@@ -11,6 +11,9 @@ export const generateLazyRoutes = (permissions: Permissions) => {
       !page.permissions.some((permission) => permissions[permission] === false)
     );
   };
+
+  console.log(permissions);
+
   const routesData: Array<Route> = permissions.canViewRoles
     ? authRoutesData
     : unAuthRoutesData;
