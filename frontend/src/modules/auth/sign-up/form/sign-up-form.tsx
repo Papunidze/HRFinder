@@ -1,10 +1,16 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import Google from "@/images//google.png";
 import { Form } from "@/cmd-domain/form/form";
 import { ControlledInput } from "@/cmd-domain/inputs/controlled-input";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@/lib/rest-query/use-mutation";
+import { signUpScheme } from "@/constant/authorization";
+import { register } from "../sign-up-api";
+import { useAuthContext } from "@/provider/loginProvider";
 
 const SignUp = () => {
+  const { setAuthData } = useAuthContext();
   const navigate = useNavigate();
 
   const {
@@ -13,11 +19,13 @@ const SignUp = () => {
     handleSubmit,
     // setValue,
   } = useForm({
-    defaultValues: { email: "", password: "" },
+    defaultValues: { email: "", password: "", passwordConfirm: "", name: "" },
+    resolver: yupResolver(signUpScheme),
   });
+  const $register = useMutation(register);
 
   return (
-    <div className="text-2xl leading-7 font-bold mb-2 flex flex-col gap-4 mt-4 w-full max-w-[450px]">
+    <div className="text-2xl leading-7 font-bold flex flex-col gap-4  w-full max-w-[450px] md:mt-4 mt-8">
       <button className="button secondary flex items-center justify-center">
         <img src={Google} alt="Google" className="w-6" />
         დარეგისტრირდით Google-ით
@@ -31,7 +39,20 @@ const SignUp = () => {
       </div>
 
       <Form
-        onSubmit={handleSubmit((data) => console.log(data))}
+        onSubmit={handleSubmit((form) =>
+          $register.mutate(
+            { ...form },
+            {
+              onSuccess: ({ ...args }) => {
+                setAuthData({ ...args });
+                navigate(location.pathname);
+              },
+              onError: ({ message }) => {
+                console.log(message);
+              },
+            }
+          )
+        )}
         submitButtonLabel="რეგისტრაცია"
         form={
           <div className="relative flex flex-col gap-2">

@@ -12,17 +12,24 @@ export const TRefreshToken = t.type({
   refreshToken: t.string,
 });
 
-export type AuthInput = {
+export type SignUpInput = {
   email: string;
   password: string;
+  name: string;
+  passwordConfirm: string;
 };
 
-export const auth = ({ email, password }: AuthInput) =>
+export const register = ({
+  email,
+  password,
+  name,
+  passwordConfirm,
+}: SignUpInput) =>
   rest
-    .post("/auth/sign", {
+    .post("/auth/signup", {
       email,
       password,
+      name,
+      passwordConfirm,
     })
     .decode(TAuth);
-
-export const refresh = () => rest.post("/auth/refresh").decode(TRefreshToken);

@@ -12,8 +12,6 @@ export const generateLazyRoutes = (permissions: Permissions) => {
     );
   };
 
-  console.log(permissions);
-
   const routesData: Array<Route> = permissions.canViewRoles
     ? authRoutesData
     : unAuthRoutesData;

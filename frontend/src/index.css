@@ -37,13 +37,13 @@ body {
     @apply font-MarkGeo font-semibold leading-3 tracking-wide;
   }
   .input {
-    @apply block w-full rounded-lg text-base py-1.5 px-3 border leading-7 outline-none shadow-md focus:ring-2 focus:ring-primary-light hover:ring-1 hover:ring-secondary-dark bg-secondary-dark font-inter;
+    @apply block w-full font-semibold rounded-lg text-base md:py-1 md:px-3 py-0.5 px-1.5 border leading-7 outline-none shadow-md focus:ring-2 focus:ring-primary-light hover:ring-1 hover:ring-secondary-dark bg-secondary-dark font-inter;
   }
   .label {
     @apply block text-base font-medium leading-4 px-1 py-2;
   }
   .button {
-    @apply flex w-auto font-MarkGeo tracking-wide text-base justify-center gap-2 rounded-md px-3 py-1.5 font-semibold leading-7 shadow-md  outline-none transition-all duration-500;
+    @apply flex w-auto font-MarkGeo tracking-wide text-base justify-center gap-2 rounded-md md:px-3  px-1.5 py-1 font-semibold leading-7 shadow-md  outline-none transition-all duration-500;
   }
   .primary {
     @apply text-white bg-gradient-1;
