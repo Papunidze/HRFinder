@@ -40,3 +40,17 @@ export const recoveryScheme = yup.object().shape({
     .email("Invalid email address")
     .required("Email is required"),
 });
+
+export const RecoveryPasswordScheme = yup.object().shape({
+  password: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+
+  passwordConfirm: yup
+    .string()
+    .test("passwords-match", "Passwords do not match", function (value) {
+      return value === this.parent.password;
+    })
+    .required("Password confirmation is required"),
+});

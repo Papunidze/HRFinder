@@ -19,14 +19,14 @@ router.post("/refresh", authController.refresh);
 
 // router.delete("/logout", authController.protect, authController.signout);
 
-// router.post("/forgot-password", authController.forgotPassword);
+router.post("/forgot-password", authController.forgotPassword);
 
-// router.post(
-//   "/recovery-forgot-password",
-//   updateForgotPassword,
-//   validate,
-//   authController.recoveryForgotPassword
-// );
+router.post(
+  "/recovery-forgot-password",
+  updateForgotPassword,
+  validate,
+  authController.recoveryForgotPassword
+);
 
 router.get(
   "/google",

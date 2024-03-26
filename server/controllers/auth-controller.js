@@ -6,6 +6,8 @@ const bcrypt = require("bcrypt");
 const { signTokens } = require("../utils/sign-tokens");
 const { setRefreshTokenCookie } = require("../utils/set-cookies");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
+const { EmailForm } = require("../utils/email-form");
 
 exports.signup = catchAsync(async (req, res, next) => {
   try {
@@ -124,12 +126,76 @@ exports.googleAuthCallback = catchAsync(async (req, res, next) => {
   res.redirect(`${process.env.CLIENT_URL}`);
 });
 
-exports.googleAuthCallback = catchAsync(async (req, res, next) => {
-  const tokens = signTokens(req.user, req.user._id);
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+  const { email } = req.body;
 
-  await User.updateOne({ _id: req.user._id });
+  const user = await User.findOne({ email });
 
-  setRefreshTokenCookie(res, tokens.refreshToken);
+  if (!user) {
+    return next(
+      new AppError(
+        "Email Address Not Found. Please enter a valid email address.",
+        401,
+        "errors.invalid_email"
+      )
+    );
+  }
 
-  res.redirect(`${process.env.CLIENT_URL}`);
+  const tokens = signTokens(user, user._id);
+
+  const urlPart = tokens.accessToken;
+  const encodedToken = btoa(urlPart);
+  const resetLink = `${process.env.CLIENT_URL}/recovery-password/${encodedToken}`;
+
+  const emailContent = EmailForm(user.name, resetLink);
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    host: process.env.MAIL_HOST,
+    port: process.env.MAIL_PORT,
+    secure: true,
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  });
+
+  const mailOptions = {
+    from: '"HrFinder ✨" papunidze07@gmail.com',
+    to: email,
+    subject: "Password Reset",
+    html: emailContent,
+  };
+
+  await transporter.sendMail(mailOptions);
+
+  res.status(200).json({
+    message: "Password reset instructions sent to your email.",
+    token: encodedToken,
+  });
+});
+
+exports.recoveryForgotPassword = catchAsync(async (req, res, next) => {
+  const { token, password } = req.body;
+
+  const decodedToken = atob(token);
+  const decoded = await promisify(jwt.verify)(
+    decodedToken,
+    process.env.JWT_SECRET
+  );
+
+  const user = await User.findById(decoded.id).select("+password");
+
+  if (!user) {
+    return next(new AppError("User not found", 401, "errors.user_not_found"));
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  await user.updateOne({ password: hashedPassword });
+
+  res.status(200).json({
+    status: "success",
+    message: "Password updated successfully",
+  });
 });

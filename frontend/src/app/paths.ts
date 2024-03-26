@@ -1,10 +1,10 @@
 export const authRoutes = {
   signIn: "/",
+  forgot: "/recovery-password/:token",
 };
 
 export const unAuthRoutes = {
   index: "/",
-  home: "/home",
 };
 
 export const routes = {
