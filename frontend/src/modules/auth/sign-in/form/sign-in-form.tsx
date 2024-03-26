@@ -27,7 +27,14 @@ const SignIn = () => {
 
   return (
     <div className="text-2xl leading-7 font-bold mb-2 flex flex-col gap-4 mt-4 w-full max-w-[450px]">
-      <button className="button secondary flex items-center justify-center">
+      <button
+        className="button secondary flex items-center justify-center"
+        onClick={() =>
+          (window.location.href = `${
+            import.meta.env.VITE_REACT_APP_LOCAL_URL
+          }/auth/google`)
+        }
+      >
         <img src={Google} alt="Google" className="w-6" />
         შედით Google-ით
       </button>

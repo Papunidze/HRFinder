@@ -113,3 +113,23 @@ exports.refresh = catchAsync(async (req, res, next) => {
 
   res.status(200).json({ status: "success", ...tokens });
 });
+
+exports.googleAuthCallback = catchAsync(async (req, res, next) => {
+  const tokens = signTokens(req.user, req.user._id);
+
+  await User.updateOne({ _id: req.user._id });
+
+  setRefreshTokenCookie(res, tokens.refreshToken);
+
+  res.redirect(`${process.env.CLIENT_URL}`);
+});
+
+exports.googleAuthCallback = catchAsync(async (req, res, next) => {
+  const tokens = signTokens(req.user, req.user._id);
+
+  await User.updateOne({ _id: req.user._id });
+
+  setRefreshTokenCookie(res, tokens.refreshToken);
+
+  res.redirect(`${process.env.CLIENT_URL}`);
+});

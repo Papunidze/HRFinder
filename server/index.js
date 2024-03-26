@@ -7,6 +7,8 @@ const connectDB = require("./config/db");
 
 dotenv.config({ path: "./config/.env" });
 
+const passport = require("./config/passport");
+
 connectDB();
 
 const app = express();
@@ -17,7 +19,8 @@ app.use(
     credentials: true,
   })
 );
-// app.use(passport.initialize());
+
+app.use(passport.initialize());
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 

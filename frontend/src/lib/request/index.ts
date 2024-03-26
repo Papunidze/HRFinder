@@ -12,7 +12,9 @@ export const request =
   (reqUrl: string, reqBody?: RequestBody, reqType: RequestType = "JSON") => {
     return {
       decode: async <T extends Mixed>(codec: T) => {
-        const requestUrl = `http://localhost:3000${reqUrl}`;
+        const requestUrl = `${
+          import.meta.env.VITE_REACT_APP_LOCAL_URL
+        }${reqUrl}`;
         const requestHeaders = generateHeader(reqType);
         const requestBody =
           reqType === "FORM"

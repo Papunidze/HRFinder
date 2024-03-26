@@ -7,6 +7,7 @@ const {
   signInValidation,
   updateForgotPassword,
 } = require("../middleware/validation");
+const passport = require("passport");
 
 const router = express.Router();
 
@@ -27,18 +28,18 @@ router.post("/refresh", authController.refresh);
 //   authController.recoveryForgotPassword
 // );
 
-// router.get(
-//   "/google",
-//   passport.authenticate("google", { scope: ["profile", "email"] })
-// );
+router.get(
+  "/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
 
-// router.get(
-//   "/google/callback",
-//   passport.authenticate("google", {
-//     failureRedirect: process.env.CLIENT_URL,
-//     session: false,
-//   }),
-//   authController.googleAuthCallback
-// );
+router.get(
+  "/google/callback",
+  passport.authenticate("google", {
+    failureRedirect: process.env.CLIENT_URL,
+    session: false,
+  }),
+  authController.googleAuthCallback
+);
 
 module.exports = router;

@@ -26,7 +26,14 @@ const SignUp = () => {
 
   return (
     <div className="text-2xl leading-7 font-bold flex flex-col gap-4  w-full max-w-[450px] md:mt-4 mt-8">
-      <button className="button secondary flex items-center justify-center">
+      <button
+        className="button secondary flex items-center justify-center"
+        onClick={() =>
+          (window.location.href = `${
+            import.meta.env.VITE_REACT_APP_LOCAL_URL
+          }/auth/google`)
+        }
+      >
         <img src={Google} alt="Google" className="w-6" />
         დარეგისტრირდით Google-ით
       </button>
