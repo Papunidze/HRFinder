@@ -69,6 +69,7 @@ export const Auth = () => {
       removeToken();
     }
   }, [removeToken, setAuthData]);
+
   useEffect(() => {
     if (getUserAuth() !== "null" && getUserAuth() === "true") {
       refreshToken();

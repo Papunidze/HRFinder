@@ -1,5 +1,11 @@
+import TopBar from "@/components/appTopBar";
+
 const index = () => {
-  return <div>index</div>;
+  return (
+    <div>
+      <TopBar />
+    </div>
+  );
 };
 
 export default index;

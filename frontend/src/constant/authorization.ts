@@ -34,7 +34,7 @@ export const signUpScheme = yup.object().shape({
     .required("Password confirmation is required"),
 });
 
-export const recoveryScheme = yup.object().shape({
+export const resetPasswordScheme = yup.object().shape({
   email: yup
     .string()
     .email("Invalid email address")
