@@ -1,3 +1,9 @@
+const User = require("../models/user-models");
+const AppError = require("../utils/app-error");
+const catchAsync = require("../utils/catch-async");
+const jwt = require("jsonwebtoken");
+const { promisify } = require("util");
+
 exports.protect = catchAsync(async (req, res, next) => {
   let token;
 

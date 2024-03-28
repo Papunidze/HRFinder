@@ -1,5 +1,6 @@
-import { PlusCircle, Search } from "react-feather";
+import { PlusCircle } from "react-feather";
 import UserForm from "@/modules/user/form/user-form";
+import Search from "@/modules/search/form/search-form";
 
 const TopBar = () => {
   return (
@@ -17,20 +18,19 @@ const TopBar = () => {
               aria-hidden="true"
             ></span>
           </h1>
-          <div className="ml-2 md:ml-0 flex items-center relative">
-            <div className="border border-gray-200 flex rounded-md px-1 py-1 lg:py-2 lg:px-2 gap-1 md:gap-2 items-center relative">
-              <Search />
-              <input
-                placeholder="ძებნა"
-                className="outline-none font-sans font-semibold flex-grow ml-1 md:ml-2 text-sm md:text-base w-36 lg:w-full"
-              />
-            </div>
+          <div className="md:block hidden">
+            <Search />
           </div>
         </div>
         <div className="flex items-center gap-2 relative">
+          <div className="md:hidden block ">
+            <Search />
+          </div>
           <button className="button primary flex items-center justify-between text-white text-center">
             <PlusCircle color="white" />
-            <span className="text-white py-2 mb-0.5">დამატება</span>
+            <span className="text-white py-2 mb-0.5 hidden md:block">
+              დამატება
+            </span>
           </button>
           <div className="px-1 md:px-2 border-l border-gray-200 block">
             <UserForm />

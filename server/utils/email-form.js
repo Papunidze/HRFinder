@@ -1,7 +1,7 @@
 exports.EmailForm = (name, link) => {
   return `
   <div style="width: 100%; display: flex; align-items: center; justify-content: center;">
-    <div style="max-width: 650px">
+    <div style="max-width: 650px; margin: auto;">
       <table
         cellpadding="0"
         cellspacing="0"
@@ -46,7 +46,7 @@ exports.EmailForm = (name, link) => {
                         >
                           <div
                             style="
-                            color: #ff6452;
+                            color: #2C4669;
                             text-decoration: none;
                             transform: translateY(2rem);
                             font-weight: 500;
@@ -211,13 +211,13 @@ exports.EmailForm = (name, link) => {
                                             height: 48px;
                                             overflow: hidden;
                                             border-radius: 9999999px;
-                                            background-color: #ff6452;
+                                            background-color: #2C4669;
                                             font-size: 14px;
                                             line-height: 1;
                                             text-align: center;
                                             white-space: nowrap;
                                             padding: 16px 24px;
-                                            border: 1px solid #ff6452;
+                                            border: 1px solid #2C4669;
                                           "
                                             target="_blank"
                                           >

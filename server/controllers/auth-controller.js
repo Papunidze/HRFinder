@@ -116,6 +116,15 @@ exports.refresh = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: "success", ...tokens });
 });
 
+exports.signOut = (req, res) => {
+  res.clearCookie("rt");
+  res.clearCookie("auth");
+  res.status(200).json({
+    status: "success",
+    message: "Logged out",
+  });
+};
+
 exports.googleAuthCallback = catchAsync(async (req, res, next) => {
   const tokens = signTokens(req.user, req.user._id);
 
@@ -171,7 +180,6 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     message: "Password reset instructions sent to your email.",
-    token: encodedToken,
   });
 });
 

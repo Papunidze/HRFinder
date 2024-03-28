@@ -8,6 +8,7 @@ const {
   updateForgotPassword,
 } = require("../middleware/validation");
 const passport = require("passport");
+const { protect } = require("../middleware/prottect");
 
 const router = express.Router();
 
@@ -17,7 +18,7 @@ router.post("/sign", signInValidation, validate, authController.sign);
 
 router.post("/refresh", authController.refresh);
 
-// router.delete("/logout", authController.protect, authController.signout);
+router.delete("/logout", protect, authController.signOut);
 
 router.post("/forgot-password", authController.forgotPassword);
 
