@@ -16,8 +16,8 @@ const UserForm = () => {
         className="flex items-center relative cursor-pointer"
         onClick={() => setIsOpen(true)}
       >
-        <button className="w-10 h-10 relative ">
-          <img src={auth.user?.avatar} alt="" className=" rounded-full" />
+        <button className="w-12 h-12 relative ">
+          <img src={auth.user?.avatar} alt="" className="rounded-full" />
         </button>
         <div className="absolute bottom-0 bg-primary rounded-full right-0 w-4 h-4 items-center flex">
           <ArrowDown color="white" strokeWidth={3} />
@@ -35,9 +35,7 @@ const UserForm = () => {
           onClick={() => setIsOpen(false)}
         ></div>
         <div
-          className={`absolute top-full right-0 mt-2 bg-secondary shadow-lg rounded-lg w-full min-w-44 z-10 transform origin-top 0 ${
-            isOpen ? "animate-fadeIn" : "animate-fadeOut"
-          } px-2`}
+          className={`absolute top-full right-0 mt-2 bg-secondary shadow-lg rounded-lg w-full min-w-44 z-10 transform origin-top 0 max-h-60 px-2`}
         >
           <ul className="py-2">
             <li>

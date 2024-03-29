@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.18",
     "@hookform/resolvers": "^3.3.4",
     "constate": "^3.3.2",
     "io-ts": "^2.2.21",
