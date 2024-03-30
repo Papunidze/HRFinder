@@ -43,7 +43,7 @@ body {
     @apply block text-base font-medium leading-4 px-1 py-2;
   }
   .button {
-    @apply flex w-auto font-MarkGeo tracking-wide text-base justify-center gap-2 rounded-md md:px-3  px-1.5 py-1 font-semibold leading-7 shadow-md  outline-none transition-all duration-500;
+    @apply flex items-center w-auto font-MarkGeo tracking-wide text-base justify-center gap-2 rounded-md md:px-3  px-1.5 py-1 font-semibold leading-7 shadow-md  outline-none transition-all duration-500;
   }
   .primary {
     @apply text-white bg-gradient-1;

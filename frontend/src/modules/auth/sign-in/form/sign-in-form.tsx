@@ -63,6 +63,7 @@ const SignIn = () => {
           )
         )}
         submitButtonLabel="შესვლა"
+        isLoading={$auth.isLoading}
         form={
           <div className="relative flex flex-col gap-4">
             <ControlledInput

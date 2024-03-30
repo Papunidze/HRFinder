@@ -47,6 +47,7 @@ const PasswordReset = () => {
           )
         )}
         submitButtonLabel="ინსტრუქციის გაგზავნა"
+        isLoading={$resetPassword.isLoading}
         form={
           <div className="relative flex flex-col gap-4">
             <ControlledInput

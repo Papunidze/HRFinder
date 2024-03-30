@@ -8,7 +8,7 @@ type CustomFormControlProps = {
 };
 export const FormControl = (props: CustomFormControlProps) => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col flex-1">
       <label className="label">{props.label}</label>
 
       {props.children}

@@ -1,7 +1,14 @@
 import { Form } from "@/cmd-domain/form/form";
-import { ControlledInput } from "@/cmd-domain/inputs/controlled-input";
 import { ControlledSelect } from "@/cmd-domain/inputs/controlled-select";
 import { useForm } from "react-hook-form";
+import years, {
+  availabilityOptions,
+  cities,
+  educationOptions,
+  expreince,
+  skills,
+} from "../options";
+import { Search } from "react-feather";
 
 const Filter = () => {
   const {
@@ -13,25 +20,14 @@ const Filter = () => {
     defaultValues: {
       birth: "",
       experience: "",
-      education: "bachelor",
+      education: "",
       skills: "",
-      availability: "fullTime",
+      availability: "",
       location: "",
+      startYear: "",
+      finishYear: "",
     },
   });
-
-  const educationOptions = [
-    { label: "ბაკალავრის ხარისხი", value: "bachelor" },
-    { label: "მაგისტრის ხარისხი", value: "master" },
-    { label: "დოქტორანტურა", value: "phd" },
-  ];
-
-  const availabilityOptions = [
-    { label: "სრული განაკვეთი", value: "fullTime" },
-    { label: "ნახევარ განაკვეთზე", value: "partTime" },
-    { label: "დისტანციური", value: "remote" },
-    { label: "ადგილზე", value: "onSite" },
-  ];
 
   return (
     <div className="w-full mt-24 block bg-secondary rounded-md p-4 px-">
@@ -39,21 +35,38 @@ const Filter = () => {
         onSubmit={handleSubmit((data) => console.log(data))}
         submitButtonLabel="ძებნა"
         btnStyle={"max-w-40 self-end py-2 px-6"}
+        Icon={<Search stroke="white" />}
         form={
           <div className="grid md:grid-cols-3 gap-4 grid-cols-1">
-            <ControlledInput
-              control={control}
-              errors={errors.birth}
-              name="birth"
-              inputProps={{ type: "text" }}
-              label="დაბადების წელი:"
-            />
-            <ControlledInput
+            <div className="flex w-full items-start justify-center flex-col z-50 ">
+              <label className="label">დაბადების წელი:</label>
+              <div className="flex items-center gap-2 w-full -translate-y-[15px]">
+                <ControlledSelect
+                  control={control}
+                  errors={errors.startYear}
+                  name="startYear"
+                  defaultValue="დან"
+                  options={years}
+                  style="flex-1"
+                />
+                <ControlledSelect
+                  control={control}
+                  errors={errors.finishYear}
+                  name="finishYear"
+                  options={years}
+                  defaultValue="მდე"
+                  style="flex-1"
+                />
+              </div>
+            </div>
+
+            <ControlledSelect
               control={control}
               errors={errors.experience}
               name="experience"
               label="გამოცდილება:"
-              inputProps={{ type: "text" }}
+              options={expreince}
+              defaultValue="აირჩიეთ გამოცდილების წელბი"
             />
             <ControlledSelect
               control={control}
@@ -61,13 +74,15 @@ const Filter = () => {
               name="education"
               label="განათლება:"
               options={educationOptions}
+              defaultValue="აირჩიეთ განათლება"
             />
-            <ControlledInput
+            <ControlledSelect
               control={control}
               errors={errors.skills}
               name="skills"
               label="უნარები:"
-              inputProps={{ type: "text" }}
+              defaultValue="აირჩიეთ უნარები"
+              options={skills}
             />
 
             <ControlledSelect
@@ -76,14 +91,16 @@ const Filter = () => {
               name="availability"
               label="ხელმისაწვდომია:"
               options={availabilityOptions}
+              defaultValue="აირჩიეთ ხელმისაწვდომობა"
             />
 
-            <ControlledInput
+            <ControlledSelect
               control={control}
               errors={errors.location}
               name="location"
               label="მდებარეობა:"
-              inputProps={{ type: "text" }}
+              options={cities}
+              defaultValue="აირჩიეთ მდებარეობა"
             />
           </div>
         }

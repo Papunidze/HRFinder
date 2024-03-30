@@ -11,6 +11,7 @@ type ControlledSelectProps = {
   style?: string;
   errors?: FieldError | undefined;
   options: { label: string; value: string | number }[];
+  defaultValue?: string;
 };
 
 export const ControlledSelect = ({
@@ -19,6 +20,8 @@ export const ControlledSelect = ({
   control,
   errors,
   options,
+  style,
+  defaultValue,
 }: ControlledSelectProps) => {
   return (
     <Controller
@@ -30,17 +33,15 @@ export const ControlledSelect = ({
           error={!!errors}
           helperText={errors?.message}
         >
-          <div className="relative">
+          <div className={`relative ${style} min-w-28`}>
             <Listbox value={field.value} onChange={field.onChange}>
               {({ open }) => (
                 <>
                   <Listbox.Button
                     className={` block w-full rounded-lg text-base md:py-1 md:px-3 py-0.5 px-1.5 border leading-7 outline-none shadow-sm focus:ring-2 focus:ring-primary-light hover:ring-1 hover:ring-secondary-dark font-semibold text-left font-MarkGeo`}
                   >
-                    {
-                      options.find((option) => option.value === field.value)
-                        ?.label
-                    }
+                    {options.find((option) => option.value === field.value)
+                      ?.label || defaultValue}
                   </Listbox.Button>
                   {open && (
                     <div className="absolute z-10 mt-0.5 w-full bg-secondary shadow-lg max-h-60 rounded-lg  text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none">

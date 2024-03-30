@@ -61,6 +61,7 @@ const SignUp = () => {
           )
         )}
         submitButtonLabel="რეგისტრაცია"
+        isLoading={$register.isLoading}
         form={
           <div className="relative flex flex-col gap-2">
             <ControlledInput

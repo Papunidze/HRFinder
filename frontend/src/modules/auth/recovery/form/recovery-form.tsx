@@ -41,7 +41,7 @@ const RecoveryForm = ({ token }: { token: string }) => {
             }
           )
         )}
-        isLoading={false}
+        isLoading={$recoveryPassword.isLoading}
         submitButtonLabel="Reset Password"
         btnStyle="w-fit p-2"
         form={
