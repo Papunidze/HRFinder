@@ -3,6 +3,7 @@ import { useAuthContext } from "@/provider/loginProvider";
 import { useState } from "react";
 import { ArrowDown } from "react-feather";
 import { SignOut } from "../user-api";
+import Settings from "@/modules/settings/form/settings-form";
 
 const UserForm = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,7 +12,7 @@ const UserForm = () => {
   const $signOut = useMutation(SignOut);
 
   return (
-    <div className="block w-auto">
+    <div className="block w-auto z-50">
       <div
         className="flex items-center relative cursor-pointer"
         onClick={() => setIsOpen(true)}
@@ -39,12 +40,7 @@ const UserForm = () => {
         >
           <ul className="py-2">
             <li>
-              <a
-                href="/cart"
-                className="block px-4 py-2 text-gray-800 rounded-md hover:bg-gray-200"
-              >
-                პარამეტრები
-              </a>
+              <Settings />
             </li>
             <li className="cursor-pointer">
               <a
