@@ -1,11 +1,13 @@
 import Filter from "@/modules/filter/form/filter-form";
+import Groups from "@/modules/groups/form/groups-form";
 
-const index = () => {
+const Home = () => {
   return (
     <div>
       <Filter />
+      <Groups />
     </div>
   );
 };
 
-export default index;
+export default Home;

@@ -15,10 +15,8 @@ const Filter = () => {
     control,
     formState: { errors },
     handleSubmit,
-    // setValue,
   } = useForm({
     defaultValues: {
-      birth: "",
       experience: "",
       education: "",
       skills: "",
@@ -30,7 +28,7 @@ const Filter = () => {
   });
 
   return (
-    <div className="w-full mt-24 block bg-secondary rounded-md p-4 px-">
+    <div className="w-full mt-24 block bg-secondary rounded-md p-4 ">
       <Form
         onSubmit={handleSubmit((data) => console.log(data))}
         submitButtonLabel="ძებნა"

@@ -16,20 +16,25 @@ export type Route = LazyRouteProps & { permissions?: Array<PermissionKey> };
 
 export const authRoutesData: Array<Route> = [
   {
-    title: "Home",
+    title: "Welcome",
     path: routes.index,
     component: lazy(() => import("@/pages/home")),
+  },
+  {
+    title: "Members",
+    path: routes.members,
+    component: lazy(() => import("@/pages/members")),
   },
 ];
 
 export const unAuthRoutesData: Array<Route> = [
   {
-    title: "Welcome",
+    title: "Authorization",
     path: routes.index,
     component: lazy(() => import("@/pages/auth")),
   },
   {
-    title: "Welcome",
+    title: "Recovery-Password",
     path: routes.forgot,
     component: lazy(() => import("@/pages/recovery")),
   },

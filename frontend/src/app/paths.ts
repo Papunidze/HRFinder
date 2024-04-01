@@ -5,6 +5,7 @@ export const authRoutes = {
 
 export const unAuthRoutes = {
   index: "/",
+  members: "/members",
 };
 
 export const routes = {
