@@ -25,6 +25,11 @@ export const authRoutesData: Array<Route> = [
     path: routes.members,
     component: lazy(() => import("@/pages/members")),
   },
+  {
+    title: "User",
+    path: routes.user,
+    component: lazy(() => import("@/pages/user")),
+  },
 ];
 
 export const unAuthRoutesData: Array<Route> = [

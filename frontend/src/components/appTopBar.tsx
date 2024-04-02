@@ -1,6 +1,6 @@
-import { PlusCircle } from "react-feather";
 import UserForm from "@/modules/user/form/user-form";
 import Search from "@/modules/search/form/search-form";
+import CreateGroup from "@/modules/create-group/form/create-group";
 
 const TopBar = () => {
   return (
@@ -26,12 +26,7 @@ const TopBar = () => {
           <div className="md:hidden block ">
             <Search />
           </div>
-          <button className="button primary flex items-center justify-between text-white text-center">
-            <PlusCircle color="white" />
-            <span className="text-white py-2 mb-0.5 hidden md:block">
-              დამატება
-            </span>
-          </button>
+          <CreateGroup />
           <div className="px-1 md:px-2 border-l border-gray-200 block">
             <UserForm />
           </div>
