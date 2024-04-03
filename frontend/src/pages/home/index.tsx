@@ -1,12 +1,11 @@
-import Filter from "@/modules/filter/form/filter-form";
+import PageLayout from "@/layout/pageLayout";
 import Groups from "@/modules/groups/form/groups-form";
 
 const Home = () => {
   return (
-    <div>
-      <Filter />
+    <PageLayout>
       <Groups />
-    </div>
+    </PageLayout>
   );
 };
 

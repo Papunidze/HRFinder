@@ -30,6 +30,11 @@ export const authRoutesData: Array<Route> = [
     path: routes.user,
     component: lazy(() => import("@/pages/user")),
   },
+  {
+    title: "Create User",
+    path: routes.create,
+    component: lazy(() => import("@/pages/create")),
+  },
 ];
 
 export const unAuthRoutesData: Array<Route> = [

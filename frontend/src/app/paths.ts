@@ -7,6 +7,7 @@ export const unAuthRoutes = {
   index: "/",
   members: "/members",
   user: "/user",
+  create: "/create",
 };
 
 export const routes = {

@@ -1,3 +1,4 @@
+import PageLayout from "@/layout/pageLayout";
 import { useAuthContext } from "@/provider/loginProvider";
 
 const User = () => {
@@ -42,7 +43,7 @@ const User = () => {
   ];
 
   return (
-    <div className="container mx-auto p-4 mt-24 bg-secondary rounded-lg">
+    <PageLayout>
       <div className="flex flex-col md:flex-row">
         <div className="md:w-1/3">
           <div className="mb-8 flex items-center justify-start gap-2 md:flex-row flex-col">
@@ -101,7 +102,7 @@ const User = () => {
           </div>
         </div>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 

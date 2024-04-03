@@ -59,7 +59,7 @@ export const ControlledSelect = ({
                             }
                           >
                             <span
-                              className={`block  font-MarkGeo font-semibold`}
+                              className={`block  font-MarkGeo font-semibold leading-7`}
                             >
                               {option.label}
                             </span>

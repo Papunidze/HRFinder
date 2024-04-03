@@ -1,20 +1,27 @@
 import { Form } from "@/cmd-domain/form/form";
 import { ControlledInput } from "@/cmd-domain/inputs/controlled-input";
-import Dialog from "@/components/appDialog";
 import { useState } from "react";
 import { PlusCircle } from "react-feather";
 import { useForm } from "react-hook-form";
 import defaultImg from "@/images/default.jpg";
+import { ControlledSelect } from "@/cmd-domain/inputs/controlled-select";
+import years, {
+  availabilityOptions,
+  cities,
+  educationOptions,
+  expreince,
+  skills,
+} from "@/modules/filter/options";
+import { useNavigate } from "react-router-dom";
 
 const CreateUser = () => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const navigate = useNavigate();
   const [avatar, setAvatar] = useState("");
 
   const {
     handleSubmit,
     control,
     formState: { errors },
-    reset,
   } = useForm({
     defaultValues: {
       name: "",
@@ -36,91 +43,132 @@ const CreateUser = () => {
     }
   };
 
-  const handleCloseDialog = () => {
-    setIsDialogOpen(false);
-    reset();
-    setAvatar("");
-  };
-
   return (
     <div className="relative inline-block w-full">
-      <button
-        className="button primary flex items-center justify-between text-white text-center"
-        onClick={() => setIsDialogOpen(true)}
-      >
-        <PlusCircle color="white" />
-        <span className="text-white py-2 mb-0.5 hidden md:block">Add User</span>
-      </button>
-
-      <Dialog
-        isOpen={isDialogOpen}
-        title="Create User"
-        onClose={handleCloseDialog}
-      >
-        <div className="flex flex-col items-center justify-center w-full gap-4 mt-4">
-          <div className="flex flex-row items-center justify-start w-full gap-6">
-            <img
-              src={avatar || defaultImg}
-              alt="Avatar"
-              width={100}
-              height={100}
-              className="rounded-lg"
-            />
-            <div className="flex flex-col items-start justify-center gap-4 relative">
-              <input
-                type="file"
-                accept="image/*"
-                style={{ display: "none" }}
-                onChange={handleImageUpload}
-                id="image-upload-input"
-              />
-              <label
-                htmlFor="image-upload-input"
-                className="button primary cursor-pointer"
-              >
-                Upload Photo
-              </label>
-
-              <span className="text-gray-400 text-sm">
-                JPG, GIF, or PNG. Max 1MB.
-              </span>
-            </div>
-          </div>
-          <Form
-            onSubmit={handleSubmit((formData) => {
-              console.log(formData); // Handle form submission, e.g., API call
-              handleCloseDialog(); // Close the dialog after submission
-            })}
-            submitButtonLabel="Save"
-            btnStyle="w-fit  px-5"
-            form={
-              <>
-                <ControlledInput
-                  control={control}
-                  name="name"
-                  inputProps={{ type: "text" }}
-                  label="Name:"
-                  errors={errors.name}
-                />
-                <ControlledInput
-                  control={control}
-                  name="email"
-                  inputProps={{ type: "email" }}
-                  label="Email:"
-                  errors={errors.email}
-                />
-                <ControlledInput
-                  control={control}
-                  name="phoneNumber"
-                  inputProps={{ type: "text" }}
-                  label="Phone Number:"
-                  errors={errors.phoneNumber}
-                />
-              </>
-            }
+      <div className="flex flex-col items-center justify-center w-full gap-4 mt-4">
+        <div className="flex flex-row items-center justify-start w-full gap-6">
+          <img
+            src={avatar || defaultImg}
+            alt="Avatar"
+            width={100}
+            height={100}
+            className="rounded-lg"
           />
+          <div className="flex flex-col items-start justify-center gap-4 relative">
+            <input
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleImageUpload}
+              id="image-upload-input"
+            />
+            <label
+              htmlFor="image-upload-input"
+              className="button primary cursor-pointer"
+            >
+              Upload Photo
+            </label>
+
+            <span className="text-gray-400 text-sm">
+              JPG, GIF, or PNG. Max 1MB.
+            </span>
+          </div>
         </div>
-      </Dialog>
+        <Form
+          onSubmit={handleSubmit((formData) => {
+            console.log(formData);
+          })}
+          submitButtonLabel="Save"
+          btnStyle="w-fit  px-5"
+          form={
+            <>
+              <ControlledInput
+                control={control}
+                name="name"
+                inputProps={{ type: "text" }}
+                label="სახელი:"
+                errors={errors.name}
+              />
+              <ControlledInput
+                control={control}
+                name="email"
+                inputProps={{ type: "email" }}
+                label="ელ.ფოსტა:"
+                errors={errors.email}
+              />
+              <ControlledInput
+                control={control}
+                name="phoneNumber"
+                inputProps={{ type: "text" }}
+                label="ტელეფონის ნომერი:"
+                errors={errors.phoneNumber}
+              />
+              <ControlledInput
+                control={control}
+                name="phoneNumber"
+                inputProps={{ type: "text" }}
+                label="პროფესია:"
+                errors={errors.phoneNumber}
+              />
+              <ControlledInput
+                control={control}
+                name="phoneNumber"
+                inputProps={{ type: "text" }}
+                label="აღწერა:"
+                errors={errors.phoneNumber}
+              />
+              <ControlledSelect
+                control={control}
+                errors={errors.birthday}
+                name="experience"
+                label="დაბადების წელი:"
+                options={years}
+                defaultValue="აირჩიეთ გამოცდილების წელბი"
+              />
+              <ControlledSelect
+                control={control}
+                errors={errors.experience}
+                name="experience"
+                label="გამოცდილება:"
+                options={expreince}
+                defaultValue="აირჩიეთ გამოცდილების წელბი"
+              />
+              <ControlledSelect
+                control={control}
+                errors={errors.education}
+                name="education"
+                label="განათლება:"
+                options={educationOptions}
+                defaultValue="აირჩიეთ განათლება"
+              />
+              <ControlledSelect
+                control={control}
+                errors={errors.skills}
+                name="skills"
+                label="უნარები:"
+                defaultValue="აირჩიეთ უნარები"
+                options={skills}
+              />
+              <ControlledSelect
+                control={control}
+                errors={errors.location}
+                name="location"
+                label="მდებარეობა:"
+                options={cities}
+                defaultValue="აირჩიეთ მდებარეობა"
+              />
+              <ControlledSelect
+                control={control}
+                errors={errors.availability}
+                name="availability"
+                label="ხელმისაწვდომია:"
+                options={availabilityOptions}
+                defaultValue="აირჩიეთ ხელმისაწვდომობა"
+              />
+            </>
+          }
+        />
+      </div>
     </div>
   );
 };
