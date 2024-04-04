@@ -5,7 +5,7 @@ import years, {
   availabilityOptions,
   cities,
   educationOptions,
-  expreince,
+  experience,
   skills,
 } from "../options";
 import { Search } from "react-feather";
@@ -63,7 +63,7 @@ const Filter = () => {
               errors={errors.experience}
               name="experience"
               label="გამოცდილება:"
-              options={expreince}
+              options={experience}
               defaultValue="აირჩიეთ გამოცდილების წელბი"
             />
             <ControlledSelect

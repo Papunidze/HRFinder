@@ -1,23 +1,26 @@
-import { useAuthContext } from "@/provider/loginProvider";
+import Poppins from "@/components/appPoppins";
 
 const MembersCard = () => {
-  const { auth } = useAuthContext();
   return (
-    <div className="grid grid-cols-1 gap-4 mt-12 w-full md:grid-cols-2 lg:grid-cols-4">
-      <div className="max-w-sm  overflow-hidden  flex gap-2 cursor-pointer bg-secondary rounded-lg">
-        <div className="p-4 flex items-center justify-center">
+    <div className="container flex justify-center items-center gap-10 p-2">
+      <div className="max-w-xs  bg-secondary shadow-lg rounded-lg overflow-hidden transition duration-300 ease-in-out relative">
+        <div className="w-12 h-12 absolute right-2 top-2  flex items-center">
+          <Poppins list={["ამოშლა", "ჩასწორება"]} />
+        </div>
+        <div className=" z-10 m-auto p-4">
           <img
-            className="object-contain rounded-md"
-            src={auth.user?.avatar}
-            alt={"test"}
+            src="https://i.pinimg.com/originals/a4/7b/a5/a47ba59b4a353e0928ef0551ca44f980.jpg"
+            alt="Placeholder"
+            className="w-full h-full object-cover rounded-lg"
           />
         </div>
-        <div className="px-6 py-4">
-          <div className="font-bold text-xl mb-2">{"Giga"}</div>
-          <p className="text-gray-700 text-base">Experience: {"3"} years</p>
-          <p className="text-gray-700 text-base">Skills: </p>
-          <p className="text-gray-700 text-base">Education: {"2"}</p>
-          <p className="text-gray-700 text-base">Location: {"ბათუმი"}</p>
+        <div className="content relative px-4 py-2 text-center transition duration-300 ease-in-out  opacity-100 visible">
+          <h3 className="text-lg font-semibold mb-2">This is content</h3>
+          <p className="text-sm text-gray-700">
+            In publishing and graphic design, Lorem ipsum is a placeholder text
+            commonly used to demonstrate the visual form of a document or a
+            typeface without relying on meaningful content.
+          </p>
         </div>
       </div>
     </div>

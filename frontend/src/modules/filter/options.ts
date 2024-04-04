@@ -28,7 +28,7 @@ export const availabilityOptions = [
   { label: "ადგილზე", value: "onSite" },
 ];
 
-export const expreince = [
+export const experience = [
   { label: "1 წლიანი", value: "1" },
   { label: "2 წლიანი", value: "2" },
   { label: "3 წლიანი", value: "3" },
