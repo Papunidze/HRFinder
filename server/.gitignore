@@ -63,4 +63,4 @@ yarn-error.log*
 *.swp
 
 # Ignore Firebase service account JSON file
-hrfinder-fa544-firebase-adminsdk-7lmr2-7069bb7384.json
+*.hrfinder-fa544-firebase-adminsdk-7lmr2-7069bb7384.json
