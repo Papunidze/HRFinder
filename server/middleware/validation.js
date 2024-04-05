@@ -53,6 +53,17 @@ module.exports = {
       .isLength({ min: 6 })
       .withMessage("Password must be at least 6 characters long"),
   ],
+  createGroupValidation: [
+    check("name")
+      .isLength({ min: 3, max: 50 })
+      .withMessage("Name must be at least 3 characters long")
+      .custom((value) => {
+        if (!/^[A-Za-z\s]+$/.test(value)) {
+          throw new Error("Name can only contain alphabets and spaces");
+        }
+        return true;
+      }),
+  ],
   validate: (req, res, next) => {
     const errors = validationResult(req);
     if (errors.isEmpty()) {

@@ -25,6 +25,8 @@ app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 
 app.use("/auth", require("./routes/auth-routes"));
+app.use("/user", require("./routes/user-routes"));
+app.use("/group", require("./routes/group-routes"));
 
 app.use((err, req, res, next) => {
   console.error(`Error handler : ${err.message}`);

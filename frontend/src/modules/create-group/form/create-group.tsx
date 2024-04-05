@@ -8,15 +8,18 @@ import defaultImg from "@/images/default.jpg";
 
 const CreateGroup = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [avatar, setAvatar] = useState("");
 
   const {
     handleSubmit,
     control,
     formState: { errors },
+    setValue,
+    watch,
+    register,
   } = useForm({
     defaultValues: {
       name: "",
+      avatar: "",
     },
   });
 
@@ -27,11 +30,13 @@ const CreateGroup = () => {
       reader.onload = (event) => {
         const imageDataUrl = event.target?.result as string;
 
-        setAvatar(imageDataUrl);
+        setValue("avatar", imageDataUrl);
       };
       reader.readAsDataURL(file);
     }
   };
+
+  const avatar = watch("avatar");
 
   return (
     <div className="relative inline-block w-full">
@@ -56,6 +61,7 @@ const CreateGroup = () => {
               width={100}
               height={100}
               className="rounded-lg"
+              {...register("avatar")}
             />
             <div className="flex flex-col items-start justify-center gap-4 relative">
               <input

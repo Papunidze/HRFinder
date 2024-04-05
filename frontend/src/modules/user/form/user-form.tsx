@@ -3,7 +3,7 @@ import { useAuthContext } from "@/provider/loginProvider";
 import { useState } from "react";
 import { ArrowDown } from "react-feather";
 import { SignOut } from "../user-api";
-import Settings from "@/modules/settings/form/settings-form";
+import Settings from "@/pages/settings";
 
 const UserForm = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,8 +20,8 @@ const UserForm = () => {
         <button className="w-12 h-12 relative ">
           <img src={auth.user?.avatar} alt="" className="rounded-full" />
         </button>
-        <div className="absolute bottom-0 bg-primary rounded-full right-0 w-4 h-4 items-center flex">
-          <ArrowDown color="white" strokeWidth={3} />
+        <div className="absolute bottom-0 bg-secondary-light rounded-full right-0 w-4 h-4 items-center flex">
+          <ArrowDown color="black" strokeWidth={1.5} />
         </div>
       </div>
       <div

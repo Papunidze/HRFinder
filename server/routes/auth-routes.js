@@ -8,7 +8,7 @@ const {
   updateForgotPassword,
 } = require("../middleware/validation");
 const passport = require("passport");
-const { protect } = require("../middleware/prottect");
+const { protect } = require("../middleware/protect");
 
 const router = express.Router();
 
