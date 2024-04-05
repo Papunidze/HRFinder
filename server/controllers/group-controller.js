@@ -2,6 +2,7 @@ const catchAsync = require("../utils/catch-async");
 const AppError = require("../utils/app-error");
 
 const Group = require("../models/group-models");
+const { uploadImage } = require("../config/storage");
 
 exports.createGroup = catchAsync(async (req, res, next) => {
   try {
@@ -12,13 +13,14 @@ exports.createGroup = catchAsync(async (req, res, next) => {
       .map((n) => n[0])
       .join("");
 
-    const image = (await uploadImage(req.body.image)) || req.user.image;
+    const image =
+      (await uploadImage(req.body.image)) ||
+      `https://api.dicebear.com/5.x/initials/svg?seed=${initials}`;
 
     const newGroup = new Group({
       name: req.body.name,
       admins: admin,
-      image:
-        image || `https://api.dicebear.com/5.x/initials/svg?seed=${initials}`,
+      image: image,
     });
 
     await newGroup.save();

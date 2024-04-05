@@ -5,6 +5,8 @@ import { useState } from "react";
 import { PlusCircle } from "react-feather";
 import { useForm } from "react-hook-form";
 import defaultImg from "@/images/default.jpg";
+import { useMutation } from "@/lib/rest-query/use-mutation";
+import { createGroup } from "../create-group-api";
 
 const CreateGroup = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -19,7 +21,7 @@ const CreateGroup = () => {
   } = useForm({
     defaultValues: {
       name: "",
-      avatar: "",
+      image: "",
     },
   });
 
@@ -30,14 +32,19 @@ const CreateGroup = () => {
       reader.onload = (event) => {
         const imageDataUrl = event.target?.result as string;
 
-        setValue("avatar", imageDataUrl);
+        setValue("image", imageDataUrl);
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const avatar = watch("avatar");
-
+  const avatar = watch("image");
+  const $create = useMutation(createGroup);
+  const handleClose = () => {
+    setValue("image", "");
+    setValue("name", "");
+    setIsDialogOpen((prev) => !prev);
+  };
   return (
     <div className="relative inline-block w-full">
       <button
@@ -48,11 +55,7 @@ const CreateGroup = () => {
         <span className="text-white py-2 mb-0.5 hidden md:block">დამატება</span>
       </button>
 
-      <Dialog
-        isOpen={isDialogOpen}
-        title="ჯგუფის შექმნა"
-        onClose={() => setIsDialogOpen((prev) => !prev)}
-      >
+      <Dialog isOpen={isDialogOpen} title="ჯგუფის შექმნა" onClose={handleClose}>
         <div className="flex flex-col items-center justify-center w-full gap-4 mt-4">
           <div className="flex flex-row items-center justify-start w-full gap-6">
             <img
@@ -61,7 +64,7 @@ const CreateGroup = () => {
               width={100}
               height={100}
               className="rounded-lg"
-              {...register("avatar")}
+              {...register("image")}
             />
             <div className="flex flex-col items-start justify-center gap-4 relative">
               <input
@@ -84,7 +87,19 @@ const CreateGroup = () => {
             </div>
           </div>
           <Form
-            onSubmit={handleSubmit((form) => console.log(form))}
+            onSubmit={handleSubmit((form) =>
+              $create.mutate(
+                { ...form },
+                {
+                  onSuccess: () => {
+                    console.log("work");
+                  },
+                  onError: ({ message }) => {
+                    console.log(message);
+                  },
+                }
+              )
+            )}
             submitButtonLabel="შენახვა"
             btnStyle="w-fit  px-5"
             form={

@@ -38,11 +38,6 @@ router.delete(
   groupController.removeAdminFromGroup
 );
 
-router.delete(
-  "/:groupId/remove",
-  protect,
-
-  groupController.removeGroup
-);
+router.delete("/:groupId/remove", protect, groupController.removeGroup);
 
 module.exports = router;
