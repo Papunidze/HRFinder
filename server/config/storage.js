@@ -1,5 +1,5 @@
 const admin = require("firebase-admin");
-const serviceAccount = require("../../hrfinder-fa544-firebase-adminsdk-7lmr2-7069bb7384.json");
+const serviceAccount = require("../hrfinder-fa544-firebase-adminsdk-7lmr2-7069bb7384.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
