@@ -27,7 +27,7 @@ exports.createGroup = catchAsync(async (req, res, next) => {
 
     res.status(201).json({
       status: "success",
-      newGroup,
+      group: newGroup,
     });
   } catch (err) {
     console.log(err.message);
@@ -64,6 +64,7 @@ exports.addAdminToGroup = catchAsync(async (req, res, next) => {
 
 exports.editGroupDetails = catchAsync(async (req, res, next) => {
   try {
+    console.log(req.params);
     const { groupId } = req.params;
     const { name } = req.body;
 
@@ -77,7 +78,6 @@ exports.editGroupDetails = catchAsync(async (req, res, next) => {
 
     res.status(200).json({
       status: "success",
-      message: "Group details updated successfully",
       group,
     });
   } catch (err) {
@@ -180,7 +180,25 @@ exports.removeGroup = catchAsync(async (req, res, next) => {
 
     res.status(200).json({
       status: "success",
-      message: "Group removed successfully",
+      group: group,
+    });
+  } catch (err) {
+    console.log(err.message);
+    return next(new AppError(err.message));
+  }
+});
+
+exports.getGroups = catchAsync(async (req, res, next) => {
+  try {
+    const adminId = req.user._id;
+
+    const groups = await Group.find({ admins: adminId });
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        groups,
+      },
     });
   } catch (err) {
     console.log(err.message);

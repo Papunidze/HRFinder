@@ -41,7 +41,6 @@ export const generateHeader = (type: string) => {
   }
 
   headers["Content-type"] = "application/json";
-  headers["X-RT"] = getUserAuth();
 
   return headers;
 };

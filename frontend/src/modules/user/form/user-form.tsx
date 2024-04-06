@@ -39,7 +39,7 @@ const UserForm = () => {
           className={`absolute top-full right-0 mt-2 bg-secondary shadow-lg rounded-lg w-full min-w-44 z-10 transform origin-top 0 max-h-60 px-2`}
         >
           <ul className="py-2">
-            <li>
+            <li onClick={() => setIsOpen(false)}>
               <Settings />
             </li>
             <li className="cursor-pointer">

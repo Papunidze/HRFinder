@@ -1,7 +1,14 @@
 import { useState } from "react";
 import { MoreVertical } from "react-feather";
 
-const Poppins = ({ list }: { list: string[] }) => {
+interface PoppinsProps {
+  list: {
+    label: string;
+    fn?: () => void;
+  }[];
+}
+
+const Poppins = ({ list }: PoppinsProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -26,9 +33,16 @@ const Poppins = ({ list }: { list: string[] }) => {
         >
           <ul className="py-2">
             {list.map((element) => (
-              <li className="cursor-pointer" key={element}>
-                <a className="block px-4 py-2 text-gray-800 rounded-md hover:bg-gray-200">
-                  {element}
+              <li
+                className="cursor-pointer"
+                key={element.label}
+                onClick={() => setIsOpen(false)}
+              >
+                <a
+                  className="block px-4 py-2 text-gray-800 rounded-md hover:bg-gray-200"
+                  onClick={element.fn}
+                >
+                  {element.label}
                 </a>
               </li>
             ))}

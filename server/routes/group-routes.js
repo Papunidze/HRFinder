@@ -40,4 +40,6 @@ router.delete(
 
 router.delete("/:groupId/remove", protect, groupController.removeGroup);
 
+router.get("/", protect, groupController.getGroups);
+
 module.exports = router;

@@ -5,11 +5,18 @@ import { useState } from "react";
 import { PlusCircle } from "react-feather";
 import { useForm } from "react-hook-form";
 import defaultImg from "@/images/default.jpg";
-import { useMutation } from "@/lib/rest-query/use-mutation";
-import { createGroup } from "../create-group-api";
+import { useMutation, useQueryClient } from "react-query"; // Import useQueryClient
+import { createGroup, editGroup } from "../create-group-api";
+import { EditState } from "@/modules/groups/form/groups-form";
 
-const CreateGroup = () => {
+interface GroupProps {
+  isEdit?: EditState;
+  setIsEdit?: React.Dispatch<React.SetStateAction<EditState>>;
+}
+
+const CreateGroup = ({ isEdit, setIsEdit }: GroupProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const queryClient = useQueryClient();
 
   const {
     handleSubmit,
@@ -20,8 +27,8 @@ const CreateGroup = () => {
     register,
   } = useForm({
     defaultValues: {
-      name: "",
-      image: "",
+      name: isEdit?.name || "",
+      image: isEdit?.image || "",
     },
   });
 
@@ -31,7 +38,6 @@ const CreateGroup = () => {
       const reader = new FileReader();
       reader.onload = (event) => {
         const imageDataUrl = event.target?.result as string;
-
         setValue("image", imageDataUrl);
       };
       reader.readAsDataURL(file);
@@ -39,23 +45,44 @@ const CreateGroup = () => {
   };
 
   const avatar = watch("image");
-  const $create = useMutation(createGroup);
+
+  const $request = useMutation(isEdit ? editGroup : createGroup, {
+    onSuccess: () => {
+      setIsDialogOpen(false);
+      setIsEdit?.((prevState) => ({ ...prevState, isOpen: false }));
+      queryClient.invalidateQueries("groups");
+    },
+    onError: (error) => {
+      console.error("Error:", error);
+    },
+  });
+
   const handleClose = () => {
     setValue("image", "");
     setValue("name", "");
-    setIsDialogOpen((prev) => !prev);
+    setIsDialogOpen(false);
+    setIsEdit?.((prevState) => ({ ...prevState, isOpen: false }));
   };
+
   return (
     <div className="relative inline-block w-full">
-      <button
-        className="button primary flex items-center justify-between text-white text-center"
-        onClick={() => setIsDialogOpen(true)}
-      >
-        <PlusCircle color="white" />
-        <span className="text-white py-2 mb-0.5 hidden md:block">დამატება</span>
-      </button>
+      {!isEdit && (
+        <button
+          className={` button primary  items-center justify-between text-white text-center flex`}
+          onClick={() => setIsDialogOpen(true)}
+        >
+          <PlusCircle color="white" />
+          <span className="text-white py-2 mb-0.5 hidden md:block">
+            დამატება
+          </span>
+        </button>
+      )}
 
-      <Dialog isOpen={isDialogOpen} title="ჯგუფის შექმნა" onClose={handleClose}>
+      <Dialog
+        isOpen={isEdit?.isOpen || isDialogOpen}
+        title="ჯგუფის შექმნა"
+        onClose={handleClose}
+      >
         <div className="flex flex-col items-center justify-center w-full gap-4 mt-4">
           <div className="flex flex-row items-center justify-start w-full gap-6">
             <img
@@ -88,30 +115,18 @@ const CreateGroup = () => {
           </div>
           <Form
             onSubmit={handleSubmit((form) =>
-              $create.mutate(
-                { ...form },
-                {
-                  onSuccess: () => {
-                    console.log("work");
-                  },
-                  onError: ({ message }) => {
-                    console.log(message);
-                  },
-                }
-              )
+              $request.mutate({ ...form, id: isEdit?.id })
             )}
             submitButtonLabel="შენახვა"
             btnStyle="w-fit  px-5"
             form={
-              <>
-                <ControlledInput
-                  control={control}
-                  name="name"
-                  inputProps={{ type: "text" }}
-                  label="სახელი:"
-                  errors={errors.name}
-                />
-              </>
+              <ControlledInput
+                control={control}
+                name="name"
+                inputProps={{ type: "text" }}
+                label="სახელი:"
+                errors={errors.name}
+              />
             }
           />
         </div>

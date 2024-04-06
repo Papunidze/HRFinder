@@ -21,8 +21,8 @@ export type UserState = {
 };
 
 export type AuthState =
-  | { type: AuthType.NULL; user: null }
-  | { type: AuthType.UNAUTHENTICATED; user: null }
+  | { type: AuthType.NULL; user: null; id: null }
+  | { type: AuthType.UNAUTHENTICATED; user: null; id: null }
   | {
       type: AuthType.AUTHENTICATED;
       id: string;
@@ -32,7 +32,7 @@ export type AuthState =
 export let GlobalAccessToken: string | null;
 
 export type JwtPayload = {
-  userId: string;
+  id: string;
   user: UserState;
 };
 
@@ -43,21 +43,22 @@ export const Auth = () => {
   const [auth, setAuth] = useState<AuthState>({
     type: AuthType.NULL,
     user: null,
+    id: null,
   });
 
   const setAuthData = useCallback(({ ...args }) => {
     GlobalAccessToken = args.accessToken;
-    const { userId, user } = decodeJwt(args.accessToken);
+    const { id, user } = decodeJwt(args.accessToken);
 
     setAuth(() => ({
       type: AuthType.AUTHENTICATED,
       user,
-      id: userId,
+      id: id,
     }));
   }, []);
 
   const removeToken = useCallback(() => {
-    setAuth({ type: AuthType.UNAUTHENTICATED, user: null });
+    setAuth({ type: AuthType.UNAUTHENTICATED, user: null, id: null });
     deleteAllCookies();
   }, []);
 
@@ -74,14 +75,14 @@ export const Auth = () => {
     if (getUserAuth() !== "null" && getUserAuth() === "true") {
       refreshToken();
     } else {
-      setAuth({ type: AuthType.UNAUTHENTICATED, user: null });
+      setAuth({ type: AuthType.UNAUTHENTICATED, user: null, id: null });
     }
   }, [refreshToken]);
 
   const watchToken = (event: StorageEvent) => {
     if (event.key === "rt") {
       removeToken();
-      setAuth({ type: AuthType.UNAUTHENTICATED, user: null });
+      setAuth({ type: AuthType.UNAUTHENTICATED, user: null, id: null });
     }
   };
   useEffect(() => {

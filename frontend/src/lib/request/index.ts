@@ -1,6 +1,7 @@
-import { generateHeader } from "@/app/cookies";
 import { isLeft } from "fp-ts/lib/Either";
+import { buildRequestUrl } from "./use-request-url";
 import { TypeOf, Mixed } from "io-ts";
+import { generateHeader } from "@/app/cookies";
 
 export type RequestMethod = "POST" | "GET" | "DELETE" | "PUT";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -12,9 +13,7 @@ export const request =
   (reqUrl: string, reqBody?: RequestBody, reqType: RequestType = "JSON") => {
     return {
       decode: async <T extends Mixed>(codec: T) => {
-        const requestUrl = `${
-          import.meta.env.VITE_REACT_APP_LOCAL_URL
-        }${reqUrl}`;
+        const requestUrl = buildRequestUrl(reqUrl);
         const requestHeaders = generateHeader(reqType);
         const requestBody =
           reqType === "FORM"

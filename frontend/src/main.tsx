@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
@@ -17,11 +17,13 @@ export const queryClient = new QueryClient({
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Helmet defaultTitle="HrFinder" titleTemplate="%s · HrFinder" />
+    <Helmet defaultTitle="Tickets" titleTemplate="%s · Tickets" />
     <QueryClientProvider client={queryClient}>
       <CheckLoginProvider>
         <BrowserRouter>
-          <App />
+          <Suspense fallback={null}>
+            <App />
+          </Suspense>
         </BrowserRouter>
       </CheckLoginProvider>
     </QueryClientProvider>
