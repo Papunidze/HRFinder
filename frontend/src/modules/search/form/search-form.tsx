@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ArrowLeft, Search as SearchIcon } from "react-feather";
+import ResultCard from "./result-card";
 
 const Search = () => {
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
@@ -38,6 +39,7 @@ const Search = () => {
           </div>
         </div>
       </div>
+      <ResultCard />
     </div>
   );
 };

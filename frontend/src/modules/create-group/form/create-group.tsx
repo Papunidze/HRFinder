@@ -2,7 +2,7 @@ import { Form } from "@/cmd-domain/form/form";
 import { ControlledInput } from "@/cmd-domain/inputs/controlled-input";
 import Dialog from "@/components/appDialog";
 import { useState } from "react";
-import { PlusCircle } from "react-feather";
+import { PlusCircle, Upload } from "react-feather";
 import { useForm } from "react-hook-form";
 import defaultImg from "@/images/default.jpg";
 import { useMutation, useQueryClient } from "react-query"; // Import useQueryClient
@@ -68,12 +68,12 @@ const CreateGroup = ({ isEdit, setIsEdit }: GroupProps) => {
     <div className="relative inline-block w-full">
       {!isEdit && (
         <button
-          className={` button primary  items-center justify-between text-white text-center flex`}
+          className={` button primary  items-center justify-between text-white text-center flex mb-2`}
           onClick={() => setIsDialogOpen(true)}
         >
           <PlusCircle color="white" />
-          <span className="text-white py-2 mb-0.5 hidden md:block">
-            დამატება
+          <span className="text-white py-2 mb-0.5 block">
+            ახალი ჯგუფის დამატება
           </span>
         </button>
       )}
@@ -105,7 +105,7 @@ const CreateGroup = ({ isEdit, setIsEdit }: GroupProps) => {
                 htmlFor="image-upload-input"
                 className="button primary cursor-pointer"
               >
-                ფოტოსურათის ატვირთვა
+                <Upload color="white" />
               </label>
 
               <span className="text-gray-400 text-sm">

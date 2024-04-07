@@ -55,7 +55,7 @@ export const ControlledSelect = ({
                                 active
                                   ? "bg-gray-200 rounded-md "
                                   : "text-gray-800"
-                              } cursor-pointer select-none relative py-2 pl-3 pr-9 px-4`
+                              } cursor-pointer select-none relative  pl-3 pr-9 px-4`
                             }
                           >
                             <span

@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from "react-query"; // Import useQueryClient
 import { deleteGroup, getGroup } from "../groups-api";
 import { useState } from "react";
 import CreateGroup from "@/modules/create-group/form/create-group";
+import { Eye } from "react-feather";
 
 interface Group {
   _id: string;
@@ -27,14 +28,8 @@ const Groups = () => {
   });
   const queryClient = useQueryClient();
 
-  const groupsQuery = useQuery(`groups`, () => getGroup(), {
+  const groupsQuery = useQuery(`groups`, async () => await getGroup(), {
     retry: true,
-    onSuccess: ({ ...args }) => {
-      console.log(args);
-    },
-    onError: (error) => {
-      console.log(error);
-    },
   });
 
   const handleEdit = (element: Group) => {
@@ -54,47 +49,49 @@ const Groups = () => {
 
   return (
     <div className="flex flex-col gap-4 w-full relative">
-      {groupsQuery.isLoading && <p>Loading</p>}
-      {groupsQuery.data &&
-        groupsQuery.data?.data.groups.map((element, index) => (
-          <div className="relative" key={index}>
-            <div className="rounded-2xl mb-2 group bg-secondary relative">
-              <div className="flex items-center justify-start gap-2 p-4 max-h-32">
-                <div className="relative w-16 h-16 flex items-center justify-center">
-                  <img
-                    src={element.image}
-                    alt=""
-                    className="object-contain select-none rounded-full"
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {groupsQuery.isLoading && <p>Loading</p>}
+        {groupsQuery.data &&
+          groupsQuery.data?.data.groups.map((element, index) => (
+            <div
+              className="flex flex-col relative items-center justify-center rounded-lg gap-4 shadow-sm p-4 border border-gray-200"
+              key={index}
+            >
+              <div className="p-2 rounded-lg w-full shadow-sm border border-gray-200">
+                <img
+                  src={element.image}
+                  alt={`Group: ${element.name}`}
+                  className="w-full h-24 object-contain rounded-lg"
+                />
+              </div>
+              <div className="flex flex-col items-center">
+                <h2 className="text-lg font-semibold font-Poppins">
+                  {element.name}
+                </h2>
+                <label className="text-gray-500">წევრი: 0</label>
+              </div>
+              <div className="w-full">
+                <div className="absolute top-2 right-0">
+                  <Poppins
+                    list={[
+                      { label: "პარამეტრები", fn: () => handleEdit(element) },
+                      {
+                        label: "გამოსვლა",
+                        fn: () => handleDelete(element._id),
+                      },
+                    ]}
                   />
                 </div>
-                <div className="flex justify-between w-full px-4">
-                  <div className="w-full flex flex-col items-start justify-center ">
-                    <div className="font-medium leading-5 text-base">
-                      <h1>{element.name}</h1>
-                    </div>
-                    <div className="font-normal font-MarkGeo text-left leading-5 text-xs">
-                      <span>{element.members.length} მომხმარებელი</span>
-                    </div>
-                  </div>
-                  <div className="w-14 h-9 m-auto mr-2">
-                    <button className="button primary">ნახვა</button>
-                  </div>
-                </div>
+                <button className="button primary" style={{ width: "100%" }}>
+                  ნახვა
+                </button>
               </div>
             </div>
-            <div className="absolute top-0 right-0">
-              <Poppins
-                list={[
-                  { label: "პარამეტრები", fn: () => handleEdit(element) },
-                  { label: "გამოსვლა", fn: () => handleDelete(element._id) },
-                ]}
-              />
-            </div>
-          </div>
-        ))}
-      {isEditStates.isOpen && (
-        <CreateGroup isEdit={isEditStates} setIsEdit={setIsEditStates} />
-      )}
+          ))}
+        {isEditStates.isOpen && (
+          <CreateGroup isEdit={isEditStates} setIsEdit={setIsEditStates} />
+        )}
+      </div>
     </div>
   );
 };

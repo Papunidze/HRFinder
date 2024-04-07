@@ -48,6 +48,7 @@ export const Auth = () => {
 
   const setAuthData = useCallback(({ ...args }) => {
     GlobalAccessToken = args.accessToken;
+
     const { id, user } = decodeJwt(args.accessToken);
 
     setAuth(() => ({

@@ -19,17 +19,20 @@ export const request =
           reqType === "FORM"
             ? new URLSearchParams(reqBody)
             : JSON.stringify(reqBody);
+
         const response = await fetch(requestUrl, {
           method: reqMethod,
           body: requestBody,
           headers: requestHeaders,
           credentials: "include",
         });
+
         if (response.ok) {
           const data = await response.json();
 
           if (isLeft(codec.decode(data)))
             console.error("Failed to decode json", JSON.stringify(data));
+
           return data as TypeOf<typeof codec>;
         } else {
           const error = (await response.json()) as {
@@ -43,6 +46,7 @@ export const request =
       },
     };
   };
+
 export const rest = {
   post: request("POST"),
   delete: request("DELETE"),

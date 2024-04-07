@@ -14,7 +14,7 @@ const Poppins = ({ list }: PoppinsProps) => {
   return (
     <div className="block w-auto z-50">
       <div
-        className="flex items-center relative cursor-pointer translate-x-3 -translate-y-3  hover:bg-secondary-light p-2 rounded-full "
+        className="flex items-center relative cursor-pointer translate-x-3 -translate-y-3   p-2 rounded-full "
         onClick={() => setIsOpen(true)}
       >
         <MoreVertical />
