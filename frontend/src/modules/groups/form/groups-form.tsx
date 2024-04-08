@@ -3,7 +3,6 @@ import { useQuery, useQueryClient } from "react-query"; // Import useQueryClient
 import { deleteGroup, getGroup } from "../groups-api";
 import { useState } from "react";
 import CreateGroup from "@/modules/create-group/form/create-group";
-import { Eye } from "react-feather";
 
 interface Group {
   _id: string;

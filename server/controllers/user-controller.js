@@ -29,7 +29,7 @@ exports.searchUser = catchAsync(async (req, res, next) => {
   try {
     const searchResults = await User.find({
       $or: [{ email: regex }],
-    }).select("_id name avatar");
+    }).select("_id name avatar email");
 
     res.status(200).json({ result: searchResults });
   } catch (err) {

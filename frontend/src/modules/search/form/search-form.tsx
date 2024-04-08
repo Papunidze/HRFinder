@@ -1,12 +1,41 @@
 import { useState } from "react";
 import { ArrowLeft, Search as SearchIcon } from "react-feather";
-import ResultCard from "./result-card";
+import ResultCard from "../components/result-card";
+import { useMutation } from "@/lib/rest-query/use-mutation";
+import { search } from "../search-api";
+import { UserState } from "@/provider/loginProvider";
+
+export type SearchUser = Pick<UserState, "_id" | "name" | "email" | "avatar">;
 
 const Search = () => {
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const [searchResult, setSearchResult] = useState<SearchUser[] | null>([]);
+  const [searchValue, setSearchValue] = useState("");
 
   const toggleMobileSearch = () => {
     setIsMobileSearchOpen(!isMobileSearchOpen);
+    setSearchResult(null);
+  };
+  const $searchQuery = useMutation(search);
+
+  const handleSearch = (event: React.FormEvent<HTMLInputElement>) => {
+    setSearchValue(event.currentTarget.value);
+    if (event.currentTarget.value.length > 1) {
+      $searchQuery.mutate(
+        { member: event.currentTarget.value },
+        {
+          onSuccess: ({ ...args }) => {
+            setSearchResult(args.result);
+          },
+          onError: (error) => {
+            console.log(error.message);
+          },
+        }
+      );
+    }
+    if (event.currentTarget.value.length < 1) {
+      setSearchResult(null);
+    }
   };
 
   return (
@@ -18,6 +47,8 @@ const Search = () => {
         <input
           placeholder="ძებნა"
           className="outline-none font-sans font-semibold flex-grow ml-1 md:ml-2 text-sm md:text-base w-36 lg:w-full  hidden md:block"
+          value={searchValue}
+          onChange={handleSearch}
         />
 
         <div
@@ -32,14 +63,24 @@ const Search = () => {
             <input
               placeholder="ძებნა"
               className="outline-none font-sans font-semibold flex-grow ml-1 md:ml-2 text-sm md:text-base w-36 lg:w-full md:block  px-2 "
+              value={searchValue}
+              onChange={handleSearch}
             />
             <button>
               <SearchIcon />
             </button>
           </div>
         </div>
+        {searchResult?.map((element, index) => (
+          <div key={index}>
+            <ResultCard
+              element={element}
+              setSearchResult={setSearchResult}
+              isLoading={$searchQuery.isLoading}
+            />
+          </div>
+        ))}
       </div>
-      <ResultCard />
     </div>
   );
 };

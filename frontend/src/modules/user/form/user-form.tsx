@@ -1,7 +1,7 @@
 import { useMutation } from "@/lib/rest-query/use-mutation";
 import { useAuthContext } from "@/provider/loginProvider";
 import { useState } from "react";
-import { ArrowDown } from "react-feather";
+import { MoreHorizontal } from "react-feather";
 import { SignOut } from "../user-api";
 import Settings from "@/pages/settings";
 
@@ -20,8 +20,8 @@ const UserForm = () => {
         <button className="w-12 h-12 relative ">
           <img src={auth.user?.avatar} alt="" className="rounded-full" />
         </button>
-        <div className="absolute bottom-0 bg-secondary-light rounded-full right-0 w-4 h-4 items-center flex">
-          <ArrowDown color="black" strokeWidth={1.5} />
+        <div className="absolute -bottom-2 -right-2 bg-secondary-light rounded-full w-6 h-6 items-center flex border-4 border-secondary ">
+          <MoreHorizontal color="black" strokeWidth={2} />
         </div>
       </div>
       <div
