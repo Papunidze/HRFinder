@@ -3,8 +3,9 @@ import { useQuery, useQueryClient } from "react-query"; // Import useQueryClient
 import { deleteGroup, getGroup } from "../groups-api";
 import { useState } from "react";
 import CreateGroup from "@/modules/create-group/form/create-group";
+import { useNavigate } from "react-router-dom";
 
-interface Group {
+export interface Group {
   _id: string;
   name: string;
   image: string;
@@ -22,6 +23,8 @@ export interface EditState {
 }
 
 const Groups = () => {
+  const navigate = useNavigate();
+
   const [isEditStates, setIsEditStates] = useState<EditState>({
     isOpen: false,
   });
@@ -60,7 +63,7 @@ const Groups = () => {
                 <img
                   src={element.image}
                   alt={`Group: ${element.name}`}
-                  className="w-full h-24 object-contain rounded-lg"
+                  className="w-full h-24 object-cover rounded-lg"
                 />
               </div>
               <div className="flex flex-col items-center">
@@ -81,8 +84,12 @@ const Groups = () => {
                     ]}
                   />
                 </div>
-                <button className="button primary" style={{ width: "100%" }}>
-                  ნახვა
+                <button
+                  className="button primary"
+                  style={{ width: "100%" }}
+                  onClick={() => navigate(`/members/${element._id}`)}
+                >
+                  ნახვ
                 </button>
               </div>
             </div>

@@ -11,8 +11,14 @@ import years, {
   experience,
   skills,
 } from "@/modules/filter/options";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { membersScheme } from "@/constant/members";
+import { useMutation } from "@/lib/rest-query/use-mutation";
+import { AddMembers } from "../create-member-api";
+import { useParams } from "react-router-dom";
 
 const CreateUser = () => {
+  const { id } = useParams();
   const {
     control,
     formState: { errors },
@@ -22,19 +28,21 @@ const CreateUser = () => {
     watch,
   } = useForm({
     defaultValues: {
+      id: id,
       about: "",
       experience: "",
       education: "",
-      skills: "",
+      skills: [] as string[],
       availability: "",
       location: "",
-      startYear: "",
-      finishYear: "",
+      birthday: "",
       email: "",
       mobile: "",
       name: "",
       avatar: "",
+      role: "",
     },
+    resolver: yupResolver(membersScheme),
   });
 
   const avatar = watch("avatar");
@@ -53,9 +61,14 @@ const CreateUser = () => {
 
   const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
+    const skill = watch("skills");
+    const updatedSkills = e.target.checked
+      ? [...skill, value]
+      : skill.filter((skill) => skill !== value);
 
-    console.log(value);
+    setValue("skills", updatedSkills);
   };
+  const $createMember = useMutation(AddMembers);
 
   return (
     <div className="relative inline-block w-full">
@@ -89,89 +102,110 @@ const CreateUser = () => {
         </div>
 
         <Form
-          onSubmit={handleSubmit((data) => console.log(data))}
+          onSubmit={handleSubmit((form) =>
+            $createMember.mutate(
+              { ...form },
+              {
+                onSuccess: () => {
+                  console.log("succsses");
+                },
+                onError: ({ message }) => {
+                  console.log(message);
+                },
+              }
+            )
+          )}
           submitButtonLabel="შენახვა"
           btnStyle={"max-w-40 self-end py-2 px-6"}
           form={
-            <div className="grid md:grid-cols-3 gap-4 grid-cols-1 relative">
-              <ControlledInput
-                control={control}
-                name="name"
-                inputProps={{ type: "text" }}
-                label="სახელი"
-                errors={errors.name}
-              />
-              <ControlledInput
-                control={control}
-                name="email"
-                inputProps={{ type: "text" }}
-                label="ელ.ფოსტა"
-                errors={errors.email}
-              />
-              <ControlledInput
-                control={control}
-                name="mobile"
-                inputProps={{ type: "text" }}
-                label="ტელეფონის ნომერი"
-                errors={errors.mobile}
-              />
-              <div className="mb-4">
-                <label htmlFor="about" className="label">
-                  აღწერა:
-                </label>
-                <textarea
-                  id="about"
-                  className="input resize-none max-h-36"
-                  required
-                  rows={4}
-                  {...register("about")}
+            <div className="w-full">
+              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <ControlledInput
+                  control={control}
+                  name="name"
+                  inputProps={{ type: "text" }}
+                  label="სახელი"
+                  errors={errors.name}
+                />
+                <ControlledInput
+                  control={control}
+                  name="role"
+                  inputProps={{ type: "text" }}
+                  label="როლი"
+                  errors={errors.name}
+                />
+                <ControlledInput
+                  control={control}
+                  name="email"
+                  inputProps={{ type: "text" }}
+                  label="ელ.ფოსტა"
+                  errors={errors.email}
+                />
+                <ControlledInput
+                  control={control}
+                  name="mobile"
+                  inputProps={{ type: "text" }}
+                  label="ტელეფონის ნომერი"
+                  errors={errors.mobile}
+                />
+                <div className="mb-4">
+                  <label htmlFor="about" className="label">
+                    აღწერა:
+                  </label>
+                  <textarea
+                    id="about"
+                    className="input resize-none max-h-36"
+                    required
+                    rows={4}
+                    {...register("about")}
+                  />
+                </div>
+                <ControlledSelect
+                  control={control}
+                  errors={errors.birthday}
+                  name="birthday"
+                  label="დაბადების წელი:"
+                  defaultValue="დაბადების წელი"
+                  options={years}
+                  style="flex-1"
+                />
+                <ControlledSelect
+                  control={control}
+                  errors={errors.experience}
+                  name="experience"
+                  label="გამოცდილება:"
+                  options={experience}
+                  defaultValue="აირჩიეთ გამოცდილების წელბი"
+                />
+                <ControlledSelect
+                  control={control}
+                  errors={errors.education}
+                  name="education"
+                  label="განათლება:"
+                  options={educationOptions}
+                  defaultValue="აირჩიეთ განათლება"
+                />
+
+                <ControlledSelect
+                  control={control}
+                  errors={errors.availability}
+                  name="availability"
+                  label="ხელმისაწვდომია:"
+                  options={availabilityOptions}
+                  defaultValue="აირჩიეთ ხელმისაწვდომობა"
+                />
+                <ControlledSelect
+                  control={control}
+                  errors={errors.location}
+                  name="location"
+                  label="მდებარეობა:"
+                  options={cities}
+                  defaultValue="აირჩიეთ მდებარეობა"
                 />
               </div>
-              <ControlledSelect
-                control={control}
-                errors={errors.startYear}
-                name="startYear"
-                label="დაბადების წელი:"
-                defaultValue="დაბადების წელი"
-                options={years}
-                style="flex-1"
-              />
-              <ControlledSelect
-                control={control}
-                errors={errors.experience}
-                name="experience"
-                label="გამოცდილება:"
-                options={experience}
-                defaultValue="აირჩიეთ გამოცდილების წელბი"
-              />
-              <ControlledSelect
-                control={control}
-                errors={errors.education}
-                name="education"
-                label="განათლება:"
-                options={educationOptions}
-                defaultValue="აირჩიეთ განათლება"
-              />
-
-              <ControlledSelect
-                control={control}
-                errors={errors.availability}
-                name="availability"
-                label="ხელმისაწვდომია:"
-                options={availabilityOptions}
-                defaultValue="აირჩიეთ ხელმისაწვდომობა"
-              />
-              <ControlledSelect
-                control={control}
-                errors={errors.location}
-                name="location"
-                label="მდებარეობა:"
-                options={cities}
-                defaultValue="აირჩიეთ მდებარეობა"
-              />
-              <div className=" flex w-full flex-col md:col-span-3 col-span-1">
-                <label className="label mb-2">უნარები:</label>
-                <div className="grid md:grid-cols-3 gap-4 grid-cols-1 p-2">
+              <div className="flex justify-center mt-4 mb-2 flex-col">
+                <label className="label mb-2 font-semibold">უნარები:</label>
+                <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
                   {skills.map((skill) => (
                     <div key={skill.label} className="flex items-center mb-2">
                       <input
@@ -180,7 +214,7 @@ const CreateUser = () => {
                         name="skills"
                         value={skill.value}
                         onChange={handleSkillChange}
-                        className="mr-2"
+                        className=" mr-2 appearance-none w-4 h-4 rounded-md border-2 border-gray-300 checked:bg-primary checked:border-transparent focus:outline-none cursor-pointer"
                       />
                       <label
                         htmlFor={skill.label}

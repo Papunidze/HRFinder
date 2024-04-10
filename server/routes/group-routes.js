@@ -20,11 +20,7 @@ router.post(
 
 router.put("/:groupId/edit", protect, groupController.editGroupDetails);
 
-router.post(
-  "/:groupId/add-member/:memberId",
-  protect,
-  groupController.addMemberToGroup
-);
+router.post("/:groupId/add-member", protect, groupController.addMemberToGroup);
 
 router.delete(
   "/:groupId/remove-member/:memberId",
@@ -41,5 +37,11 @@ router.delete(
 router.delete("/:groupId/remove", protect, groupController.removeGroup);
 
 router.get("/", protect, groupController.getGroups);
+
+router.get("/:groupId", protect, groupController.getAdminsOfGroup);
+
+router.get("/:groupId/members", protect, groupController.getMembersOfGroup);
+
+router.get("/member/:memberId", protect, groupController.getCurrentMembers);
 
 module.exports = router;

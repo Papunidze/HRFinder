@@ -1,7 +1,7 @@
 import { rest } from "@/lib/request";
 import * as t from "io-ts";
 
-const group = t.type({
+export const group = t.type({
   _id: t.string,
   name: t.string,
   image: t.string,
@@ -22,6 +22,14 @@ export const DeleteGroup = t.type({
   status: t.literal("success"),
   group: group,
 });
+
+interface addAdminProps {
+  groupId: string;
+  adminId: string;
+}
+
+export const addAdmin = ({ groupId, adminId }: addAdminProps) =>
+  rest.post(`/group/${groupId}/add-admin/${adminId}`).decode(DeleteGroup);
 
 export const getGroup = () => rest.get(`/group`).decode(GroupsResponse);
 

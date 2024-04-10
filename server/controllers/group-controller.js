@@ -3,6 +3,8 @@ const AppError = require("../utils/app-error");
 
 const Group = require("../models/group-models");
 const { uploadImage } = require("../config/storage");
+const User = require("../models/user-models");
+const Member = require("../models/members-scheme");
 
 exports.createGroup = catchAsync(async (req, res, next) => {
   try {
@@ -35,11 +37,96 @@ exports.createGroup = catchAsync(async (req, res, next) => {
   }
 });
 
+exports.getAdminsOfGroup = catchAsync(async (req, res, next) => {
+  try {
+    const { groupId } = req.params;
+
+    const group = await Group.findById(groupId);
+    if (!group) {
+      return next(new AppError("Group not found", 404));
+    }
+
+    const admins = await User.find({ _id: { $in: group.admins } }).select(
+      "_id name avatar email"
+    );
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        admins,
+      },
+    });
+  } catch (err) {
+    console.log(err.message);
+    return next(new AppError(err.message));
+  }
+});
+
+exports.getMembersOfGroup = catchAsync(async (req, res, next) => {
+  try {
+    const { groupId } = req.params;
+
+    const group = await Group.findById(groupId);
+
+    if (!group) {
+      return next(new AppError("Group not found", 404));
+    }
+
+    const members = await Member.find({ _id: { $in: group.members } });
+
+    res.status(200).json({
+      status: "success",
+      members,
+    });
+  } catch (err) {
+    console.log(err.message);
+    return next(new AppError(err.message));
+  }
+});
+
+exports.getCurrentMembers = catchAsync(async (req, res, next) => {
+  try {
+    const member = await Member.findOne({ _id: req.params.memberId });
+
+    res.status(200).json({
+      status: "success",
+      member,
+    });
+  } catch (err) {
+    console.log(err.message);
+    return next(new AppError(err.message));
+  }
+});
+
+exports.getGroupById = catchAsync(async (req, res, next) => {
+  try {
+    const groupId = req.params.groupId;
+
+    const group = await Group.findById(groupId);
+
+    if (!group) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Group not found",
+      });
+    }
+
+    res.status(200).json({
+      status: "success",
+      group: group,
+    });
+  } catch (err) {
+    console.log(err.message);
+    return next(new AppError(err.message));
+  }
+});
+
 exports.addAdminToGroup = catchAsync(async (req, res, next) => {
   try {
     const { groupId, adminId } = req.params;
 
     const group = await Group.findById(groupId);
+
     if (!group) {
       return next(new AppError("Group not found", 404));
     }
@@ -49,11 +136,11 @@ exports.addAdminToGroup = catchAsync(async (req, res, next) => {
     }
 
     group.admins.push(adminId);
+
     await group.save();
 
     res.status(200).json({
       status: "success",
-      message: "Admin added successfully",
       group,
     });
   } catch (err) {
@@ -64,7 +151,6 @@ exports.addAdminToGroup = catchAsync(async (req, res, next) => {
 
 exports.editGroupDetails = catchAsync(async (req, res, next) => {
   try {
-    console.log(req.params);
     const { groupId } = req.params;
     const { name } = req.body;
 
@@ -88,23 +174,32 @@ exports.editGroupDetails = catchAsync(async (req, res, next) => {
 
 exports.addMemberToGroup = catchAsync(async (req, res, next) => {
   try {
-    const { groupId, memberId } = req.params;
+    const { groupId } = req.params;
+    const { body } = req;
+
+    const initials = body.name
+      .split(" ")
+      .map((n) => n[0])
+      .join("");
+
+    const avatar =
+      (await uploadImage(body.avatar)) ||
+      `https://api.dicebear.com/5.x/initials/svg?seed=${initials}`;
+
+    const newMember = await Member.create({ ...body, avatar });
 
     const group = await Group.findById(groupId);
+
     if (!group) {
       return next(new AppError("Group not found", 404));
     }
 
-    if (group.members.includes(memberId)) {
-      return next(new AppError("User is already a member of the group", 400));
-    }
+    group.members.push(newMember._id);
 
-    group.members.push(memberId);
     await group.save();
 
     res.status(200).json({
       status: "success",
-      message: "Member added successfully",
       group,
     });
   } catch (err) {

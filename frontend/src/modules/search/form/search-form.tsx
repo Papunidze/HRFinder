@@ -4,6 +4,8 @@ import ResultCard from "../components/result-card";
 import { useMutation } from "@/lib/rest-query/use-mutation";
 import { search } from "../search-api";
 import { UserState } from "@/provider/loginProvider";
+import { useQuery } from "react-query";
+import { getGroup } from "@/modules/groups/groups-api";
 
 export type SearchUser = Pick<UserState, "_id" | "name" | "email" | "avatar">;
 
@@ -16,7 +18,12 @@ const Search = () => {
     setIsMobileSearchOpen(!isMobileSearchOpen);
     setSearchResult(null);
   };
+
   const $searchQuery = useMutation(search);
+
+  const groupsQuery = useQuery(`groups`, async () => await getGroup(), {
+    retry: true,
+  });
 
   const handleSearch = (event: React.FormEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
@@ -77,6 +84,7 @@ const Search = () => {
               element={element}
               setSearchResult={setSearchResult}
               isLoading={$searchQuery.isLoading}
+              groupsQuery={groupsQuery.data?.data.groups}
             />
           </div>
         ))}
