@@ -8,10 +8,12 @@ type MembersFormWithoutId = Omit<MembersForm, "id"> & {
 
 interface Members {
   element: MembersFormWithoutId;
+  id: string;
 }
 
-const MembersCard = ({ element }: Members) => {
+const MembersCard = ({ element, id }: Members) => {
   const navigate = useNavigate();
+
   return (
     <div className="grid grid-cols-1  lg:grid-cols-4 gap-4 border border-gray-200 shadow-sm p-4 relative">
       <div className="flex items-center justify-start gap-4">
@@ -46,7 +48,15 @@ const MembersCard = ({ element }: Members) => {
         დეტალები
       </button>
       <div className="absolute right-0 top-2">
-        <Poppins list={[{ label: "ჩასწორება" }, { label: "წაშლა" }]} />
+        <Poppins
+          list={[
+            {
+              label: "ჩასწორება",
+              fn: () => navigate(`/create/${id}?flow=${element._id}`),
+            },
+            { label: "წაშლა" },
+          ]}
+        />
       </div>
     </div>
   );

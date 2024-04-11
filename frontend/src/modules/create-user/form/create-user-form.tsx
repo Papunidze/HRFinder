@@ -1,6 +1,6 @@
 import { Form } from "@/cmd-domain/form/form";
 import { ControlledInput } from "@/cmd-domain/inputs/controlled-input";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import defaultImg from "@/images/default.jpg";
 import { ControlledSelect } from "@/cmd-domain/inputs/controlled-select";
@@ -14,11 +14,17 @@ import years, {
 import { yupResolver } from "@hookform/resolvers/yup";
 import { membersScheme } from "@/constant/members";
 import { useMutation } from "@/lib/rest-query/use-mutation";
-import { AddMembers } from "../create-member-api";
+import { AddMembers, updateMember } from "../create-member-api";
 import { useParams } from "react-router-dom";
+import { getMemberById } from "@/modules/[members]/[...members].api";
 
 const CreateUser = () => {
   const { id } = useParams();
+
+  const queryParams = new URLSearchParams(location.search);
+
+  const flowValue = queryParams.get("flow") as string;
+
   const {
     control,
     formState: { errors },
@@ -45,6 +51,35 @@ const CreateUser = () => {
     resolver: yupResolver(membersScheme),
   });
 
+  useEffect(() => {
+    if (flowValue) {
+      const fetchData = async () => {
+        try {
+          const memberData = await getMemberById({ id: flowValue });
+          const { member } = memberData;
+          console.log(member.skills);
+          if (memberData && member) {
+            setValue("name", member.name);
+            setValue("about", member.about);
+            setValue("email", member.email);
+            setValue("experience", member.experience);
+            setValue("skills", member.skills);
+            setValue("availability", member.availability);
+            setValue("mobile", member.mobile);
+            setValue("avatar", member.avatar);
+            setValue("role", member.role);
+            setValue("birthday", member.birthday);
+          } else {
+            console.error("Invalid member data format:", memberData);
+          }
+        } catch (error) {
+          console.error("Error fetching member data:", error);
+        }
+      };
+      fetchData();
+    }
+  }, [flowValue, setValue]);
+
   const avatar = watch("avatar");
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,7 +103,10 @@ const CreateUser = () => {
 
     setValue("skills", updatedSkills);
   };
+
   const $createMember = useMutation(AddMembers);
+  const $editMember = useMutation(updateMember);
+  const $request = flowValue ? $editMember : $createMember;
 
   return (
     <div className="relative inline-block w-full">
@@ -103,8 +141,8 @@ const CreateUser = () => {
 
         <Form
           onSubmit={handleSubmit((form) =>
-            $createMember.mutate(
-              { ...form },
+            $request.mutate(
+              { ...form, membersID: flowValue },
               {
                 onSuccess: () => {
                   console.log("succsses");
@@ -144,7 +182,7 @@ const CreateUser = () => {
                 <ControlledInput
                   control={control}
                   name="mobile"
-                  inputProps={{ type: "text" }}
+                  inputProps={{ type: "number" }}
                   label="ტელეფონის ნომერი"
                   errors={errors.mobile}
                 />
@@ -214,6 +252,7 @@ const CreateUser = () => {
                         name="skills"
                         value={skill.value}
                         onChange={handleSkillChange}
+                        checked={watch("skills").includes(skill.value)}
                         className=" mr-2 appearance-none w-4 h-4 rounded-md border-2 border-gray-300 checked:bg-primary checked:border-transparent focus:outline-none cursor-pointer"
                       />
                       <label

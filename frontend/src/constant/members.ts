@@ -2,7 +2,7 @@ import * as yup from "yup";
 
 export const membersScheme = yup.object().shape({
   id: yup.string().trim().required(),
-  about: yup.string().trim().required(),
+  about: yup.string().required(),
   experience: yup.string().trim().required(),
   education: yup.string().trim().required(),
   skills: yup.array().required(),

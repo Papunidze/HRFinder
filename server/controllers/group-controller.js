@@ -208,6 +208,48 @@ exports.addMemberToGroup = catchAsync(async (req, res, next) => {
   }
 });
 
+exports.updateMember = catchAsync(async (req, res, next) => {
+  const memberId = req.user.memberId;
+
+  if (!mongoose.Types.ObjectId.isValid(memberId)) {
+    return next(
+      new AppError("Invalid memberId provided", 400, "errors.invalid_member_id")
+    );
+  }
+
+  try {
+    let updatedUser;
+
+    if (req.body.avatar) {
+      const avatar = await uploadImage(req.body.avatar);
+      updatedUser = await Member.findByIdAndUpdate(
+        memberId,
+        { ...req.body, avatar: avatar },
+        { new: true }
+      );
+    } else {
+      updatedUser = await Member.findByIdAndUpdate(
+        memberId,
+        { ...req.body },
+        { new: true }
+      );
+    }
+
+    if (!updatedUser) {
+      return next(
+        new AppError("Member not found", 404, "errors.member_not_found")
+      );
+    }
+
+    res.status(202).json({
+      status: "success",
+      user: updatedUser,
+    });
+  } catch (error) {
+    return next(new AppError(error.message, 500, "errors.server_error"));
+  }
+});
+
 exports.removeMemberFromGroup = catchAsync(async (req, res, next) => {
   try {
     const { groupId, memberId } = req.params;

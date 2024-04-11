@@ -44,4 +44,10 @@ router.get("/:groupId/members", protect, groupController.getMembersOfGroup);
 
 router.get("/member/:memberId", protect, groupController.getCurrentMembers);
 
+router.put(
+  "/update/update-member/:memberId",
+  protect,
+  groupController.updateMember
+);
+
 module.exports = router;

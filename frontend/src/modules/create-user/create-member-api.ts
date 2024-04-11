@@ -8,6 +8,7 @@ export const MembersResponse = t.type({
 });
 
 export type MembersForm = {
+  membersID?: string;
   id: string;
   about: string;
   experience: string;
@@ -20,6 +21,7 @@ export type MembersForm = {
   mobile: string;
   name: string;
   avatar: string;
+  role: string;
 };
 
 export const AddMembers = ({
@@ -35,6 +37,7 @@ export const AddMembers = ({
   mobile,
   name,
   avatar,
+  role,
 }: MembersForm) =>
   rest
     .post(`/group/${id}/add-member`, {
@@ -49,5 +52,38 @@ export const AddMembers = ({
       mobile,
       name,
       avatar,
+      role,
+    })
+    .decode(MembersResponse);
+
+export const updateMember = ({
+  membersID,
+  about,
+  email,
+  experience,
+  education,
+  skills,
+  availability,
+  location,
+  birthday,
+  mobile,
+  name,
+  avatar,
+  role,
+}: MembersForm) =>
+  rest
+    .put(`/group/update-member${membersID}`, {
+      about,
+      email,
+      experience,
+      education,
+      skills,
+      availability,
+      location,
+      birthday,
+      mobile,
+      name,
+      avatar,
+      role,
     })
     .decode(MembersResponse);

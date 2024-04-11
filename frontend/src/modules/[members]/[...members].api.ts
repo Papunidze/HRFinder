@@ -1,20 +1,6 @@
 import { rest } from "@/lib/request";
 import * as t from "io-ts";
 
-export const User = t.type({
-  _id: t.string,
-  name: t.string,
-  avatar: t.string,
-  email: t.string,
-});
-
-export const AdminResponse = t.type({
-  status: t.literal("success"),
-  data: t.type({
-    admins: t.array(User),
-  }),
-});
-
 const Member = t.type({
   _id: t.string,
   name: t.string,
@@ -28,6 +14,7 @@ const Member = t.type({
   mobile: t.string,
   skills: t.array(t.string),
   experience: t.string,
+  role: t.string,
 });
 
 export const MembersResponse = t.type({

@@ -56,7 +56,7 @@ const MembersFrom = () => {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-1">
         {$members.data?.members.map((element) => (
           <React.Fragment key={element._id}>
-            <MembersCard element={element} />
+            <MembersCard element={element} id={id} />
           </React.Fragment>
         ))}
       </div>
